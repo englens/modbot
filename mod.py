@@ -5,7 +5,7 @@ MEME_CHANNEL_ID = '433344731930689536'
 upvote = None
 downvote = None
 userfile = "users.txt"   
-KEY_PATH = Path('../key.txt')
+KEY_PATH = Path('../modkey.txt')
 
 def init_user_in_dic(dic, userid):
     dic['users'][userid] = {}
