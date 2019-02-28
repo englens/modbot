@@ -56,9 +56,9 @@ async def on_reaction_add(reaction, user):
     if reaction.message.channel.id == MEME_CHANNEL_ID and not user.bot and user.id != reaction.message.author.id:
         setup_vote_emoji(reaction.message)
         if reaction.emoji == upvote:
-            add_user_point(user.id, 1)
+            add_user_point(reaction.message.author.id, 1)
         if reaction.emoji == downvote:
-            add_user_point(user.id, -1)
+            add_user_point(reaction.message.author.id, -1)
 
 @client.event
 async def on_reaction_remove(reaction, user):
