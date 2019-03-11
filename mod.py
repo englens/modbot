@@ -1,76 +1,122 @@
-import discord, asyncio, json
-from pathlib import Path
-client = discord.Client()
-MEME_CHANNEL_ID = '433344731930689536'
-upvote = None
-downvote = None
-userfile = "users.txt"   
-KEY_PATH = Path('../modkey.txt')
+import json
+import discord
 
-def init_user_in_dic(dic, userid):
-    dic['users'][userid] = {}
-    dic['users'][userid]['points'] = 0
-    return dic
+# handles getting of user information, and storing updates automatically
+# if called for a unregistered user, init them
+class GameData:
+    def __init__(self, data_file_path):
+        self.file = data_file_path
+        self.dic = {}
+        self.update()  # updates self.dic
 
-def get_userdata():
-    with open(userfile, 'r') as f:
-        return json.load(f)
+    # read data from file. Only do this when class created.
+    def update(self):
+        with open(self.file, 'r') as f:
+            self.dic = json.load(f)
 
-def write_userdata(dic):
-    with open(userfile, 'w') as f:
-        json.dump(dic, f)
+    # save data to file
+    def save(self):
+        with open(self.file, 'w') as f:
+            json.dump(self.dic, f)
 
-def add_user_point(userid, point):
-    dic = get_userdata()
-    if userid not in dic:
-        dic = init_user_in_dic(dic, userid)
-    dic['users'][userid]['points'] += point
-    write_userdata(dic)
+    # returns the value of given user value
+    def grab_user_value(self, user_id, value_name):
+        self.update()
+        if user_id not in self.dic:
+            self.init_user(user_id)
+        return self.dic[user_id][value_name]
 
-def get_user_points(dic, userid):
-    dic = get_userdata()
-    if userid not in dic:
-        dic = init_user_in_dic(dic, userid)
-    return dic['users'][userid]['points']
+    # creates game data for user, based on dic[users][default]
+    def init_user(self, user_id):
+        self.update()
+        self.dic['users'][user_id] = self.dic['users']['default']
+        self.save()
 
-def setup_vote_emoji(message):
-    global upvote, downvote
-    if upvote == None:
-            upvote = discord.utils.get(message.server.emojis, name='upvote')
-    if downvote == None:
-        downvote = discord.utils.get(message.server.emojis, name='downvote')
+    #
+    def add_to_user_value(self, user_id, value_name, amount):
+        self.update()
+        self.dic['users'][user_id][value_name] += amount
+        self.save()
 
-@client.event
-async def on_ready():
-    print('Online.')     
 
-@client.event
-async def on_message(message):
-    setup_vote_emoji(message)
-    if message.channel.id == MEME_CHANNEL_ID:
-        await client.add_reaction(message, downvote)
-        await client.add_reaction(message, upvote)
+# General bot that holds a discord bot client.
+# holds a data file, and handles custom bot events.
+class GeneralBot:
+    def __init__(self, game_data_file, client):
+        super().__init__()
+        self.client = client  # discord.py bot client
+        self.game_data = GameData(game_data_file)
+        self.handler_dispatcher = GameEventHandlerDispatcher()
 
-@client.event
-async def on_reaction_add(reaction, user):
-    if reaction.message.channel.id == MEME_CHANNEL_ID and not user.bot and user.id != reaction.message.author.id:
-        setup_vote_emoji(reaction.message)
-        if reaction.emoji == upvote:
-            add_user_point(reaction.message.author.id, 1)
-        if reaction.emoji == downvote:
-            add_user_point(reaction.message.author.id, -1)
+        # --- client events ---
+        @client.event
+        async def on_ready():
+            print('Online.')
+            await self.call_event('on_ready')
 
-@client.event
-async def on_reaction_remove(reaction, user):
-    if reaction.message.channel.id == MEME_CHANNEL_ID and not user.bot and user.id != reaction.message.author.id:
-        setup_vote_emoji(reaction.message)
-        if reaction.emoji == upvote:
-            add_user_point(reaction.message.author.id, -1)
-        if reaction.emoji == downvote:
-            add_user_point(reaction.message.author.id, 1)
-with open(KEY_PATH, 'r') as f:
-            key = f.readlines()[0]
-            if key[-1] == '\n':
-                key = key[:-1]
-client.run(key)
+        @client.event
+        async def on_message(message):
+            await self.call_event('on_message', message)
 
+        @client.event
+        async def on_reaction_add(reaction, user):
+            await self.call_event('on_reaction_add', reaction, user)
+
+        @client.event
+        async def on_reaction_remove(reaction, user):
+            await self.call_event('on_reaction_remove', reaction, user)
+
+    # runs code for event
+    async def call_event(self, event_name: str, *event_args, **event_kwargs):
+        await self.handler_dispatcher.dispatch_event(event_name, self.client, self.game_data,
+                                                     *event_args, **event_kwargs)
+
+    # adds new handler to dispatcher
+    def register_event_handler(self, event_name: str, handler):
+        self.handler_dispatcher.add_handler(handler, event_name)
+
+
+# Allows for multiple copies of events, so I can write multiple mod functions for the same bot.
+# for each event, calls each event handler with client, game_data, and event-specific params.
+class GameEventHandlerDispatcher:
+    def __init__(self):
+        self.handlers = {"on_message": [],
+                         "on_ready": [],
+                         "on_reaction_add": [],
+                         "on_reaction_remove": []}
+
+    # runs each handler for a given event
+    # *kwargs always has same args as
+    async def dispatch_event(self, event_name, client, game_data, *event_args, **event_kwargs):
+        for handler in self.handlers[event_name]:
+            await handler(client, game_data, *event_args, **event_kwargs)
+
+    # adds new handler to dispatcher
+    def add_handler(self, handler, event_name: str):
+        self.handlers[event_name].append(handler)
+
+
+# a """discord bot""" that contains event handlers.
+# register with a GeneralBot to run the code
+# (subclass me)
+class DispatchedBot:
+    def __init__(self, bot: GeneralBot):
+        bot.register_event_handler('on_ready', self.on_ready)
+        bot.register_event_handler('on_message', self.on_message)
+        bot.register_event_handler('on_reaction_add', self.on_reaction_add)
+        bot.register_event_handler('on_reaction_remove', self.on_reaction_remove)
+
+    async def on_ready(self, client: discord.Client, game_data: GameData):
+        pass
+
+    async def on_message(self, client: discord.Client, game_data,
+                         message: discord.Message):
+        pass
+
+    async def on_reaction_add(self, client: discord.Client, game_data: GameData,
+                              reaction: discord.Reaction, user: discord.User):
+        pass
+
+    async def on_reaction_remove(self, client: discord.Client, game_data: GameData,
+                                 reaction: discord.Reaction, user: discord.User):
+        pass
