@@ -1,7 +1,8 @@
 import discord
 from mod import DispatchedBot
-MEME_CHANNEL_ID = '433344731930689536'
+MEME_CHANNELS = ['433344731930689536', '555510883887874050']
 # TEST_MEME_CHANNEL_ID = '448495055532195850'
+
 
 # gives memes an 'upvote' and 'downvote' button, using reactions
 # tracks karma to game_data[users][user_id][karma]
@@ -20,14 +21,14 @@ class MemeUpvoter(DispatchedBot):
 
     # reacts with upvote and downvote if in meme channel (defined with global)
     async def on_message(self, client, game_data, message):
-        if message.channel.id == MEME_CHANNEL_ID:
+        if message.channel.id in MEME_CHANNELS:
             self.setup_vote_emoji(message)
             await client.add_reaction(message, self.downvote)
             await client.add_reaction(message, self.upvote)
 
     # gives 1 karma to the user who posted the meme, -1 if downvote
     async def on_reaction_add(self, client, game_data, reaction, user):
-        if reaction.message.channel.id == MEME_CHANNEL_ID and not user.bot and user.id != reaction.message.author.id:
+        if reaction.message.channel.id in MEME_CHANNELS and not user.bot and user.id != reaction.message.author.id:
             self.setup_vote_emoji(reaction.message)
             if reaction.emoji == self.upvote:
                 game_data.add_to_user_value(reaction.message.author.id, 'karma', 1)
@@ -36,7 +37,7 @@ class MemeUpvoter(DispatchedBot):
 
     # gives -1 karma to the user who posted the meme, 1 if downvote
     async def on_reaction_remove(self, client, game_data, reaction, user):
-        if reaction.message.channel.id == MEME_CHANNEL_ID and not user.bot and user.id != reaction.message.author.id:
+        if reaction.message.channel.id in MEME_CHANNELS and not user.bot and user.id != reaction.message.author.id:
             self.setup_vote_emoji(reaction.message)
             if reaction.emoji == self.upvote:
                 game_data.add_to_user_value(reaction.message.author.id, 'karma', -1)
