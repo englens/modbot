@@ -1,6 +1,8 @@
 import mod
-from meme_upvoter import MemeUpvoter
 import discord
+from meme_upvoter import MemeUpvoter
+from karma_checker import KarmaChecker
+
 
 from pathlib import Path
 ADD_IN_FILE = 'add_ins.json'
@@ -31,6 +33,7 @@ def main():
 
     # ---Start bots here ---
     MemeUpvoter(bot)
+    KarmaChecker(bot)
     # ----------------------
     client.run(get_key(KEY_PATH))
 
