@@ -35,6 +35,7 @@ class GameData:
             self.dic['users'][user_id][value_name] += amount
         except KeyError:
             self.dic['users'][user_id][value_name] = amount
+        print(f'user {user_id} gained {amount} {value_name}.')
         self.save()
 
 
