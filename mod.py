@@ -35,7 +35,10 @@ class GameData:
     #
     def add_to_user_value(self, user_id, value_name, amount):
         self.update()
-        self.dic['users'][user_id][value_name] += amount
+        try:
+            self.dic['users'][user_id][value_name] += amount
+        except KeyError:
+            self.dic['users'][user_id][value_name] = amount
         self.save()
 
 
