@@ -21,20 +21,16 @@ class GameData:
 
     # returns the value of given user value
     def grab_user_value(self, user_id, value_name):
-        self.update()
-        if user_id not in self.dic:
+        if user_id not in self.dic['users']:
             self.init_user(user_id)
-        return self.dic[user_id][value_name]
+        return self.dic['users'][user_id][value_name]
 
     # creates game data for user, based on dic[users][default]
     def init_user(self, user_id):
-        self.update()
-        self.dic['users'][user_id] = self.dic['users']['default']
+        self.dic['users'][user_id] = self.dic['users']['default'].copy()
         self.save()
 
-    #
     def add_to_user_value(self, user_id, value_name, amount):
-        self.update()
         try:
             self.dic['users'][user_id][value_name] += amount
         except KeyError:
