@@ -12,4 +12,4 @@ class KarmaChecker(DispatchedBot):
     @staticmethod
     def form_karma_string(user, data):
         karma = data.grab_user_value(user.id, 'karma')
-        return f'Karma for User {user.name}: {karma}'
+        return f'Karma for user *{user.name}*: {karma}'
