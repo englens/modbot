@@ -1,6 +1,7 @@
 import json
 import discord
 
+
 # handles getting of user information, and storing updates automatically
 # if called for a unregistered user, init them
 class GameData:
@@ -34,7 +35,10 @@ class GameData:
         try:
             self.dic['users'][user_id][value_name] += amount
         except KeyError:
+            if user_id not in self.dic['users']:
+                self.init_user(user_id)
             self.dic['users'][user_id][value_name] = amount
+
         print(f'user {user_id} gained {amount} {value_name}.')
         self.save()
 

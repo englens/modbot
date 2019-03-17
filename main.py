@@ -2,7 +2,7 @@ import mod
 import discord
 from meme_upvoter import MemeUpvoter
 from karma_checker import KarmaChecker
-
+from freebie_karma import FreebieKarma
 
 from pathlib import Path
 ADD_IN_FILE = 'add_ins.json'
@@ -34,6 +34,7 @@ def main():
     # ---Start bots here ---
     MemeUpvoter(bot)
     KarmaChecker(bot)
+    FreebieKarma(bot)
     # ----------------------
     client.run(get_key(KEY_PATH))
 
