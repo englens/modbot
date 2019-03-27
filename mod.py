@@ -1,5 +1,6 @@
 import json
 import discord
+import sqlite3
 
 
 # handles getting of user information, and storing updates automatically
@@ -38,9 +39,36 @@ class GameData:
             if user_id not in self.dic['users']:
                 self.init_user(user_id)
             self.dic['users'][user_id][value_name] = amount
-
-        print(f'user {user_id} gained {amount} {value_name}.')
+        print(f'user {user_id} gained {amount} {value_name}. Now {self.dic["users"][user_id][value_name]}.')
         self.save()
+
+
+class GameDataSQL:
+    def __init__(self, sqlite_file_path):
+        self.conn = sqlite3.connect(sqlite_file_path)
+        self.cursor = self.conn.cursor()
+
+    # makes sure the database is looking good
+    def check_database(self):
+        pass
+
+    def create_database(self):
+        pass
+
+    def grab_user_value(self, user_id, value_name):
+        pass
+
+    def check_for_and_init_user(self, user_id):
+        pass
+
+    def add_to_user_value(self, user_id, value_name, amount):
+        pass
+
+    def set_user_value(self, user_id, value_name, new_value):
+        pass
+
+    def __del__(self):
+        self.conn.close()
 
 
 # General bot that holds a discord bot client.

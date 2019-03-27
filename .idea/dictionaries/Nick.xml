@@ -2,10 +2,14 @@
   <dictionary name="Nick">
     <words>
       <w>downvote</w>
+      <w>downvotes</w>
       <w>emoji</w>
+      <w>loli</w>
+      <w>shouta</w>
       <w>unvote</w>
       <w>upvote</w>
       <w>upvoter</w>
+      <w>upvotes</w>
     </words>
   </dictionary>
 </component>

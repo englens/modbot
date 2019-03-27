@@ -3,9 +3,11 @@ import discord
 from meme_upvoter import MemeUpvoter
 from karma_checker import KarmaChecker
 from freebie_karma import FreebieKarma
+from rolegiver import RoleGiver
 
 from pathlib import Path
-ADD_IN_FILE = 'add_ins.json'
+ADD_IN_FILE = './add_ins/add_ins.json'
+ADD_IN_PATH = Path('./add_ins/')
 KEY_PATH = Path('../modkey.txt')
 DATA_FILE = 'users.txt'
 
@@ -35,6 +37,7 @@ def main():
     MemeUpvoter(bot)
     KarmaChecker(bot)
     FreebieKarma(bot)
+    RoleGiver(bot)
     # ----------------------
     client.run(get_key(KEY_PATH))
 
