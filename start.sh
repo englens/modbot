@@ -1,4 +1,4 @@
 while true; do
-    python3 mod.py
+    python3 main.py
     sleep 10
 done
