@@ -20,6 +20,8 @@ class RoleGiver(DispatchedBot):
                 if message.content[6:] == 'loli':
                     await client.add_roles(message.author, self.loli)
                     print(f'User {message.author.name} given role Loli')
+                    await client.send_message(message.channel, 'Role given.')
                 if message.content[6:] == 'shouta':
                     await client.add_roles(message.author, self.shouta)
                     print(f'User {message.author.name} given role Shouta')
+                    await client.send_message(message.channel, 'Role given.')
