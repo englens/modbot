@@ -30,10 +30,8 @@ class RoleGiverAlternate(DispatchedBot):
 
     async def replace_game_role(self, client, player, new_role):
         non_game_roles = [role for role in player.roles if role not in self.roles]
-        print('non game roles:')
-        print(non_game_roles)
-        print('new role:')
         print(new_role)
+        print(type(new_role))
         await client.replace_roles(player, non_game_roles.append(new_role))
         print(f'Player {player.nick} given role {new_role}')
 
@@ -42,3 +40,5 @@ class RoleGiverAlternate(DispatchedBot):
             self.roles = {}
             for name in role_names:
                 self.roles[name] = discord.utils.get(message.server.roles, name=name)
+        for role in self.roles:
+            assert not isinstance(role, str)
