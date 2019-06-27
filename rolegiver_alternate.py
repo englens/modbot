@@ -33,6 +33,8 @@ class RoleGiverAlternate(DispatchedBot):
         assert not isinstance(new_role, str)
         print(new_role)
         print(type(new_role))
+        print(player)
+        print(type(player))
         await client.replace_roles(player, non_game_roles.append(new_role))
         print(f'Player {player.nick} given role {new_role}')
 
