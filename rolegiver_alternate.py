@@ -16,15 +16,13 @@ class RoleGiverAlternate(DispatchedBot):
                 cmds = message.content.split(' ')[1:]
                 if len(cmds) == 2 and cmds[1] in role_names:
                     #check if ping
+                    target = None
                     if len(message.mentions) == 1:
                         target = message.mentions[0]
-                        if target is not message.author:
-                            await self.replace_game_role(client, target, self.roles[cmds[1]], message)
-                        return
-                    member = discord.utils.get(message.server.members, id=cmds[0])
-                    if member is not None and member is not message.author:
-                        await self.replace_game_role(client, member, self.roles[cmds[1]], message)
-                        return
+                    else:
+                        target = discord.utils.get(message.server.members, id=cmds[0])
+                    if target is not None and target is not message.author:
+                        await self.replace_game_role(client, target, self.roles[cmds[1]], message)
         except Exception as e:
             traceback.print_exc()
 
