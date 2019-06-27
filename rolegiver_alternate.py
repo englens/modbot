@@ -19,10 +19,11 @@ class RoleGiverAlternate(DispatchedBot):
                     #check if ping
                     if len(message.mentions) == 1:
                         target = message.mentions[0]
-                        self.replace_game_role(client, target, self.roles[cmds[1]])
+                        if target is not message.author:
+                            self.replace_game_role(client, target, self.roles[cmds[1]])
                         return
                     member = discord.utils.get(message.server.members, id=cmds[0])
-                    if member is not None:
+                    if member is not None and member is not message.author:
                         self.replace_game_role(client, member, self.roles[cmds[1]])
                         return
         except Exception as e:
