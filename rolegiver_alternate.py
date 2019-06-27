@@ -5,14 +5,13 @@ role_names = ['red', 'green', 'yellow', 'brown']
 
 class RoleGiverAlternate(DispatchedBot):
     def __init__(self, *args, **kwargs):
-        self.roles = {}
         self.roles = None
         super().__init__(*args, **kwargs)
 
     async def on_message(self, client: discord.Client, game_data,
                          message: discord.Message):
         try:
-            if message.content[:6] == '!giverole ':
+            if message.content[:10] == '!giverole ':
                 self.check_and_setup_roles(message)
                 cmds = message.content.split(' ')[1:]
                 if len(cmds) == 2 and cmds[1] in role_names:
