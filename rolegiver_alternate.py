@@ -32,7 +32,7 @@ class RoleGiverAlternate(DispatchedBot):
         non_game_roles = [role for role in player.roles if role not in self.roles.values()]
         non_game_roles.append(new_role)
         await client.replace_roles(player, *non_game_roles)
-        await client.send_message(message.author, "Successfully given user {player.nick} role {new_role}.")
+        await client.send_message(message.author, f"Successfully given user {player.nick} role {new_role}.")
         await client.delete_message(message)
         print(f'Player {player.nick} given role {new_role}')
 
