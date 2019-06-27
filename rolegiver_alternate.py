@@ -1,4 +1,4 @@
-import discord
+import discord, traceback
 from mod import DispatchedBot
 role_names = ['red', 'green', 'yellow', 'brown']
 
@@ -26,7 +26,7 @@ class RoleGiverAlternate(DispatchedBot):
                         await self.replace_game_role(client, member, self.roles[cmds[1]])
                         return
         except Exception as e:
-            print(e)
+            traceback.print_exc()
 
     async def replace_game_role(self, client, player, new_role):
         non_game_roles = [role for role in player.roles if role not in self.roles]
