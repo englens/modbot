@@ -29,12 +29,7 @@ class RoleGiverAlternate(DispatchedBot):
             traceback.print_exc()
 
     async def replace_game_role(self, client, player, new_role):
-        non_game_roles = [role for role in player.roles if role not in self.roles]
-        assert not isinstance(new_role, str)
-        print(new_role)
-        print(type(new_role))
-        print(player)
-        print(type(player))
+        non_game_roles = [role for role in player.roles if role not in self.roles.values()]
         non_game_roles.append(new_role)
         await client.replace_roles(player, *non_game_roles)
         print(f'Player {player.nick} given role {new_role}')
