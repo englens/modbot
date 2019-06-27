@@ -35,7 +35,8 @@ class RoleGiverAlternate(DispatchedBot):
         print(type(new_role))
         print(player)
         print(type(player))
-        await client.replace_roles(player, non_game_roles.append(new_role))
+        non_game_roles.append(new_role)
+        await client.replace_roles(player, *non_game_roles)
         print(f'Player {player.nick} given role {new_role}')
 
     def check_and_setup_roles(self, message):
