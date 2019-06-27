@@ -3,7 +3,8 @@ import discord
 from meme_upvoter import MemeUpvoter
 from karma_checker import KarmaChecker
 from freebie_karma import FreebieKarma
-from rolegiver import RoleGiver
+#from rolegiver import RoleGiver
+from rolegiver_alternate import RoleGiverAlternate
 
 from pathlib import Path
 ADD_IN_FILE = './add_ins/add_ins.json'
@@ -29,7 +30,7 @@ def get_key(key_path):
     return key
 
 
-def main():
+if __name__ == "__main__":
     client = discord.Client()
     bot = mod.GeneralBot(DATA_FILE, client)
 
@@ -37,10 +38,6 @@ def main():
     MemeUpvoter(bot)
     KarmaChecker(bot)
     FreebieKarma(bot)
-    RoleGiver(bot)
+    RoleGiverAlternate(bot)
     # ----------------------
     client.run(get_key(KEY_PATH))
-
-
-if __name__ == "__main__":
-    main()
