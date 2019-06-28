@@ -1,13 +1,12 @@
 import discord
 from mod import DispatchedBot
+roles = {'reddit', '4chan'}
 loliname = 'reddit'
 shoutaname = '4chan'
 
 
 class RoleGiver(DispatchedBot):
     def __init__(self, *args, **kwargs):
-        self.loli = None
-        self.shouta = None
         super().__init__(*args, **kwargs)
 
     async def on_message(self, client: discord.Client, game_data,
