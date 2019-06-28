@@ -27,14 +27,12 @@ class RoleGiverAlternate(DispatchedBot):
             traceback.print_exc()
 
     async def replace_game_role(self, client, player, new_role, message):
-        await client.delete_message(message)  # Done first to remove it asap
-        author = message.author
         non_game_roles = [role for role in player.roles if role not in self.roles.values()]
         non_game_roles.append(new_role)
 
+        await client.send_message(message.channel, f"```Successfully given user {str(player)} role {str(new_role)}.```")
+        await client.delete_message(message)  # Done first to remove it asap
         await client.replace_roles(player, *non_game_roles)
-        await client.send_message(author, f"Successfully given user {player.nick} new role.")
-
         print(f'Player {player.nick} given role {new_role}')
 
     def check_and_setup_roles(self, message):
