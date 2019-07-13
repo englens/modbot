@@ -1,6 +1,6 @@
 import discord
 from mod import DispatchedBot
-command_channel_id = '577694023842660362'
+command_channel_id = '599484428296650772'
 send_to_channel_id = '184877960694726656'
 
 
