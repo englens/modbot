@@ -5,6 +5,7 @@ from karma_checker import KarmaChecker
 from freebie_karma import FreebieKarma
 #from rolegiver import RoleGiver
 from rolegiver_alternate import RoleGiverAlternate
+from manual_mode import ManualMode
 
 from pathlib import Path
 ADD_IN_FILE = './add_ins/add_ins.json'
@@ -39,5 +40,6 @@ if __name__ == "__main__":
     KarmaChecker(bot)
     FreebieKarma(bot)
     RoleGiverAlternate(bot)
+    ManualMode(bot)
     # ----------------------
     client.run(get_key(KEY_PATH))
