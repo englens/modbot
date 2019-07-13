@@ -14,9 +14,9 @@ class ManualMode(DispatchedBot):
 
     async def get_channels(self, client):
         if self.command_channel is None:
-            self.command_channel = discord.utils.get(client.get_all_channels, id=command_channel_id)
+            self.command_channel = discord.utils.get(client.get_all_channels(), id=command_channel_id)
         if self.send_to_channel is None:
-            self.send_to_channel = discord.utils.get(client.get_all_channels, id=send_to_channel_id)
+            self.send_to_channel = discord.utils.get(client.get_all_channels(), id=send_to_channel_id)
         self.roles_filled = True
 
     async def on_message(self, client: discord.Client, game_data,
