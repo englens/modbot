@@ -3,6 +3,7 @@ import discord
 from meme_upvoter import MemeUpvoter
 from karma_checker import KarmaChecker
 from freebie_karma import FreebieKarma
+from killgame import KillGame
 #from rolegiver import RoleGiver
 from rolegiver_alternate import RoleGiverAlternate
 from manual_mode import ManualMode
@@ -39,7 +40,7 @@ if __name__ == "__main__":
     MemeUpvoter(bot)
     KarmaChecker(bot)
     FreebieKarma(bot)
-    RoleGiverAlternate(bot)
+    KillGame(bot)
     ManualMode(bot)
     # ----------------------
     client.run(get_key(KEY_PATH))
