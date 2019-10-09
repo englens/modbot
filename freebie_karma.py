@@ -8,7 +8,7 @@ reaction_freebie_amt = 0.1
 class FreebieKarma(DispatchedBot):
     async def on_message(self, client: discord.Client, game_data,
                          message: discord.Message):
-        game_data.add_to_user_value(message.id, "karma", message_freebie_amt)
+        game_data.add_to_user_value(message.author.id, "karma", message_freebie_amt)
 
     async def on_reaction_add(self, client: discord.Client, game_data: GameData,
                               reaction: discord.Reaction, user: discord.User):

@@ -32,6 +32,13 @@ class GameData:
         self.dic['users'][user_id] = self.dic['users']['default'].copy()
         self.save()
 
+    def init_val(self, user_id, valname):
+        try:
+            self.dic['users'][user_id][valname] = self.dic['users']['default'][valname]
+        except Exception:
+            self.init_user(user_id)
+        self.save()
+
     def add_to_user_value(self, user_id, value_name, amount):
         try:
             self.dic['users'][user_id][value_name] += amount
