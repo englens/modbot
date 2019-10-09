@@ -19,8 +19,6 @@ class KillGame(DispatchedBot):
                     await self.kill(client, message, game_data, message.author, target)
                 else:
                     await client.send_message(message.channel, 'Proper usage: "!shoot @<name>"')
-            else:
-                await client.send_message(message.channel, 'Proper usage: "!shoot @<name>"')
         except Exception as e:
             traceback.print_exc()
 
