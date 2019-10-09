@@ -32,7 +32,7 @@ class KillGame(DispatchedBot):
         else:
             killedname = killed
 
-        if not self.roles['liv'] in killer.roles or self.roles['liv inactive'] in killer.roles:
+        if self.roles['liv'] not in killer.roles and self.roles['liv inactive'] not in killer.roles:
             await client.send_message(message.channel, f"You're already dead -- you cant kill anyone.")
             return
 
@@ -40,7 +40,7 @@ class KillGame(DispatchedBot):
             await client.send_message(message.channel, 'You have already used your bullet.')
             return
 
-        if not self.roles['liv'] in killed.roles or self.roles['liv inactive'] in killed.roles:
+        if self.roles['liv'] not in killed.roles and self.roles['liv inactive'] not in killed.roles:
             await client.send_message(message.channel, f'{killedname} already dead.')
             return
 
