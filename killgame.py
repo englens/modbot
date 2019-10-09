@@ -22,17 +22,15 @@ class KillGame(DispatchedBot):
         except Exception as e:
             traceback.print_exc()
 
-    async def replace_game_role(self, client, player, new_role, message):
-
-        non_game_roles = [role for role in player.roles if role not in self.roles.values()]
-        non_game_roles.append(new_role)
-
-        await client.send_message(message.channel, f"```Successfully given user {str(player)} role {str(new_role)}.```")
-        await client.delete_message(message)  # Done first to remove it asap
-        await client.replace_roles(player, *non_game_roles)
-        print(f'Player {player.nick} given role {new_role}')
-
     async def kill(self, client, message, game_data, killer, killed):
+        if killer.nick is None:
+            killname = killer.name
+        else:
+            killname = killer.nick
+        if killed.nick is None:
+            killedname = killed.name
+        else:
+            killedname = killed
 
         if not self.roles['liv'] in killer.roles or self.roles['liv inactive'] in killer.roles:
             await client.send_message(message.channel, f"You're already dead -- you cant kill anyone.")
@@ -43,7 +41,7 @@ class KillGame(DispatchedBot):
             return
 
         if not self.roles['liv'] in killed.roles or self.roles['liv inactive'] in killed.roles:
-            await client.send_message(message.channel, f'{killed.nick} already dead.')
+            await client.send_message(message.channel, f'{killedname} already dead.')
             return
 
         inactive = self.roles['liv inactive'] in killed.roles
@@ -54,7 +52,7 @@ class KillGame(DispatchedBot):
         else:
             non_game_roles.append(discord.utils.get(message.server.roles, name='ded'))
         await client.replace_roles(killed, *non_game_roles)
-        await client.send_message(message.channel, f'{killer.nick} has killed {killed.nick}.')
+        await client.send_message(message.channel, f'{killname} has killed {killedname}.')
 
     def check_and_setup_roles(self, message):
         if self.roles is None:
