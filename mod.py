@@ -42,6 +42,16 @@ class GameData:
         print(f'user {user_id} gained {amount} {value_name}. Now {self.dic["users"][user_id][value_name]}.')
         self.save()
 
+    def set_user_value(self, user_id, value_name, new_val):
+        try:
+            self.dic['users'][user_id][value_name] = new_val
+        except KeyError:
+            if user_id not in self.dic['users']:
+                self.init_user(user_id)
+            self.dic['users'][user_id][value_name] = new_val
+        print(f'{value_name} set to {new_val} for {user_id}.')
+        self.save()
+
 
 class GameDataSQL:
     def __init__(self, sqlite_file_path):
