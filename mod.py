@@ -25,7 +25,11 @@ class GameData:
     def grab_user_value(self, user_id, value_name):
         if user_id not in self.dic['users']:
             self.init_user(user_id)
-        return self.dic['users'][user_id][value_name]
+        try:
+            return self.dic['users'][user_id][value_name]
+        except KeyError:
+            self.init_val(user_id, value_name)
+            return self.dic['users'][user_id][value_name]
 
     # creates game data for user, based on dic[users][default]
     def init_user(self, user_id):
