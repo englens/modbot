@@ -16,9 +16,11 @@ class KillGame(DispatchedBot):
                 cmds = message.content.split(' ')
                 if len(cmds) == 2 and len(message.mentions) == 1:
                     target = message.mentions[0]
-                    await self.replace_game_role(client, target, self.roles[cmds[1]], message)
+                    await self.kill(client, message, game_data, message.author, target)
                 else:
                     await client.send_message(message.channel, 'Proper usage: "!shoot @<name>"')
+            else:
+                await client.send_message(message.channel, 'Proper usage: "!shoot @<name>"')
         except Exception as e:
             traceback.print_exc()
 
