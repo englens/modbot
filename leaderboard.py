@@ -30,7 +30,7 @@ class KarmaLeaderboard(DispatchedBot):
                 user_scores.append((nam, game_data.grab_user_value(user.id, 'karma')))
 
             # order by karma
-            user_scores = sorted(user_scores, key=lambda x: x[1])
+            user_scores = sorted(user_scores, key=lambda x: -x[1])
 
             # make the msg, add the top 5
             msg = '```----------Karma Leaderboard----------\n'
