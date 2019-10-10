@@ -7,6 +7,7 @@ from killgame import KillGame
 #from rolegiver import RoleGiver
 from rolegiver_alternate import RoleGiverAlternate
 from manual_mode import ManualMode
+from leaderboard import KarmaLeaderboard
 
 from pathlib import Path
 ADD_IN_FILE = './add_ins/add_ins.json'
@@ -42,5 +43,6 @@ if __name__ == "__main__":
     FreebieKarma(bot)
     KillGame(bot)
     ManualMode(bot)
+    KarmaLeaderboard(bot)
     # ----------------------
     client.run(get_key(KEY_PATH))
