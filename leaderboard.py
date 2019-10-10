@@ -16,7 +16,7 @@ class KarmaLeaderboard(DispatchedBot):
             # Only get users with karma
             members = []
             for i in game_data.get_all_user_ids():
-                u = discord.utils.get(message.server.members, id=i)
+                u = discord.utils.get(message.server.members, id=int(i))
                 if u is not None:
                     members.append(u)
 
