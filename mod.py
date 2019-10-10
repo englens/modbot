@@ -22,7 +22,7 @@ class GameData:
             json.dump(self.dic, f)
 
     def get_all_user_ids(self):
-        ids = [k for k in self.dic.keys() if k != 'default']
+        ids = [k for k in self.dic['users'].keys() if k != 'default']
         return ids
 
     # returns the value of given user value
