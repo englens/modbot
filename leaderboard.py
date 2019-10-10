@@ -40,5 +40,5 @@ class KarmaLeaderboard(DispatchedBot):
             max_len = max([len(x) for x in lines])
             for i in range(5):
                 msg += ' '*(max_len - len(lines[i])) + str(user_scores[i][1]) + '\n'
-            msg.append('```')
+            msg += '```'
             await client.send_message(message.channel, msg)
