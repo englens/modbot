@@ -13,10 +13,27 @@ class KarmaLeaderboard(DispatchedBot):
     # reacts with upvote and downvote if in meme channel (defined with global)
     async def on_message(self, client, game_data, message):
         if message.content.startswith('!leaderboard'):
+            # Only get users with karma
+            members = []
+            for i in game_data.get_all_user_ids():
+                try:
+                    members.append(discord.utils.get(message.server.members, id=i))
+                except Exception:
+                    pass
+
+            # get tuples of (name, karma)
             user_scores = []
-            for user in message.server.members:
-                user_scores.append((user.name, game_data.grab_user_value(user.id, 'karma')))
+            for user in members:
+                if user.nick is None:
+                    nam = user.name
+                else:
+                    nam = user.nick
+                user_scores.append((nam, game_data.grab_user_value(user.id, 'karma')))
+
+            # order by karma
             user_scores = sorted(user_scores, key=lambda x: x[1])
+
+            # make the msg, add the top 5
             msg = '```----------Karma Leaderboard----------\n'
             lines = []
             for i in range(5):
@@ -25,6 +42,4 @@ class KarmaLeaderboard(DispatchedBot):
             for i in range(5):
                 msg += ' '*(max_len - len(lines[i])) + str(user_scores[i][1]) + '\n'
             msg.append('```')
-            print(msg)
-
-    def get_all_karma(self, message, data):
+            await client.send_message(message.channel, msg)

@@ -21,6 +21,10 @@ class GameData:
         with open(self.file, 'w') as f:
             json.dump(self.dic, f)
 
+    def get_all_user_ids(self):
+        ids = [k for k in self.dic.keys() if k != 'default']
+        return ids
+
     # returns the value of given user value
     def grab_user_value(self, user_id, value_name):
         if user_id not in self.dic['users']:
