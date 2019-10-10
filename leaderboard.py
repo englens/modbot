@@ -36,9 +36,15 @@ class KarmaLeaderboard(DispatchedBot):
             msg = '```----------Karma Leaderboard----------\n'
             lines = []
             for i in range(5):
-                lines.append(f'{i+1}) {user_scores[i][0]}')
+                lines.append(f'{i+1}) {deEmojify(user_scores[i][0])}')
             max_len = max([len(x) for x in lines])
             for i in range(5):
                 msg += lines[i] + ' ' + ' '*(max_len - len(lines[i])) + '| ' + str(round(user_scores[i][1], 2)) + '\n'
             msg += '```'
             await client.send_message(message.channel, msg)
+
+
+def deEmojify(inputString):
+    """from https://stackoverflow.com/questions/33404752/removing-emojis-from-a-string-in-python"""
+    return inputString.encode('ascii', 'ignore').decode('ascii')
+
