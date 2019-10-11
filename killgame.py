@@ -11,7 +11,7 @@ class KillGame(DispatchedBot):
     async def on_message(self, client: discord.Client, game_data,
                          message: discord.Message):
         try:
-            if message.content.startswith('!shoot '):
+            if message.content.startswith('!vibe_check '):
                 self.check_and_setup_roles(message)
                 cmds = message.content.split(' ')
                 if len(cmds) == 2 and len(message.mentions) == 1:
