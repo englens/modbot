@@ -3,6 +3,7 @@ from mod import DispatchedBot
 role_names = ['red', 'green', 'yellow', 'brown']
 
 
+# Rolegiver, except other people give you roles.
 class RoleGiverAlternate(DispatchedBot):
     def __init__(self, *args, **kwargs):
         self.roles = None
