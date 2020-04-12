@@ -8,6 +8,7 @@ from rolegiver import RoleGiver
 from rolegiver_alternate import RoleGiverAlternate
 from manual_mode import ManualMode
 from leaderboard import KarmaLeaderboard
+from music_kirbyer import MusicKirbyer
 
 from pathlib import Path
 ADD_IN_FILE = './add_ins/add_ins.json'
@@ -44,5 +45,6 @@ if __name__ == "__main__":
     RoleGiver(bot)
     ManualMode(bot)
     KarmaLeaderboard(bot)
+    MusicKirbyer(bot)
     # ----------------------
     client.run(get_key(KEY_PATH))
