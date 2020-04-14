@@ -19,10 +19,11 @@ from random import randint
 
 global client, game_channel_id, game_channel
 global input_buffer, ai_dungeon_running, TIMEOUT
+client = None
 TIMEOUT = 100
 input_buffer = ''
 ai_dungeon_running = False
-game_channel_id = 699473684871512064
+game_channel_id = "699473684871512064"
 game_channel = None
 
 
@@ -34,14 +35,11 @@ def get_game_channel():
     if game_channel is None:
         game_channel = discord.utils.get(client.get_all_channels(), id=game_channel_id)
     return game_channel
-    
-    
+      
 # multiplayer ai dungeon bot
 # Requires dungeon_config.yml in same dir and 
 class Dungeon(DispatchedBot):
     def __init__(self, *args, **kwargs):
-        self.upvote = None
-        self.downvote = None
         super().__init__(*args, **kwargs)
 
 
@@ -50,15 +48,16 @@ class Dungeon(DispatchedBot):
         global input_buffer, ai_dungeon_running, client
         if client is None:
             client = cli
-        if message.author.id != 376874563847454740 and message.channel == get_game_channel():
+        if message.author.id != "445716834189312000" and message.channel == get_game_channel():
             if message.content == '!start':
                 if ai_dungeon_running:
-                    await get_game_channel().send('Game already in progress.')
+                    await client.send_message(get_game_channel(), 'Game already in progress.')
                 else:
                     ai_dungeon_running = True
+                    print('starting dungeon game')
                     await start_ai_dungeon()
                     ai_dungeon_running = False
-            if input_buffer == '' and not message.content.startswith('~'):
+            elif ai_dungeon_running and input_buffer == '' and not message.content.startswith('~'):
                 input_buffer = message.content
             
             
@@ -114,7 +113,7 @@ class DiscordIo(UserIo):
         raise QuitSession()
 
     async def handle_basic_output(self, text: str):
-        await get_game_channel().send('```'+text+'```')
+        await client.send_message(get_game_channel(), '```'+text+'```')
         await asyncio.sleep(0.25)
 
     async def handle_story_output(self, text: str):
@@ -179,7 +178,7 @@ class Config:
         return conf
 
     def load_from_file(self):
-        cfg_file = "dungeon_config.yml"
+        cfg_file = "../dungeon_config.yml"
         cfg_file_paths = [
             cfg_file
         ]

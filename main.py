@@ -47,6 +47,6 @@ if __name__ == "__main__":
     ManualMode(bot)
     KarmaLeaderboard(bot)
     MusicKirbyer(bot)
-    Dungeon(bot)
+    #Dungeon(bot)
     # ----------------------
     client.run(get_key(KEY_PATH))
