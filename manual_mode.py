@@ -1,7 +1,7 @@
 import discord
 from mod import DispatchedBot
-command_channel_id = '599484428296650772'
-send_to_channel_id = '184877960694726656'
+command_channel_id = 599484428296650772
+send_to_channel_id = 184877960694726656
 
 
 class ManualMode(DispatchedBot):
@@ -24,5 +24,5 @@ class ManualMode(DispatchedBot):
         if not self.roles_filled:
             await self.get_channels(client)
         if message.channel == self.command_channel:
-            await client.send_message(self.send_to_channel, message.content)
+            await self.send_to_channel.send(message.content)
             print('Manual sent')

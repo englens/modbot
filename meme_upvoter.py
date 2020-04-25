@@ -1,7 +1,7 @@
 import discord
 from mod import DispatchedBot
-MEME_CHANNELS = ['433344731930689536']
-# TEST_MEME_CHANNEL_ID = '448495055532195850'
+MEME_CHANNELS = [433344731930689536]
+# TEST_MEME_CHANNEL_ID = 448495055532195850
 
 
 # gives memes an 'upvote' and 'downvote' button, using reactions
@@ -15,16 +15,16 @@ class MemeUpvoter(DispatchedBot):
     # discovers the correct upvote and downvote emoji
     def setup_vote_emoji(self, message: discord.message.Message):
         if self.upvote is None:
-            self.upvote = discord.utils.get(message.server.emojis, name='upvote')
+            self.upvote = discord.utils.get(message.guild.emojis, name='upvote')
         if self.downvote is None:
-            self.downvote = discord.utils.get(message.server.emojis, name='downvote')
+            self.downvote = discord.utils.get(message.guild.emojis, name='downvote')
 
     # reacts with upvote and downvote if in meme channel (defined with global)
     async def on_message(self, client, game_data, message):
         if message.channel.id in MEME_CHANNELS:
             self.setup_vote_emoji(message)
-            await client.add_reaction(message, self.downvote)
-            await client.add_reaction(message, self.upvote)
+            await message.add_reaction(self.downvote)
+            await message.add_reaction(self.upvote)
 
     # gives 1 karma to the user who posted the meme, -1 if downvote
     async def on_reaction_add(self, client, game_data, reaction, user):

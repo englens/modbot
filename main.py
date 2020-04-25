@@ -17,7 +17,6 @@ ADD_IN_PATH = Path('./add_ins/')
 KEY_PATH = Path('../modkey.txt')
 DATA_FILE = 'users.txt'
 
-
 # returns the list of add_in classes
 # def get_add_ins(path):
 #     with open(path, 'r') as f:

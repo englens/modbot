@@ -7,7 +7,7 @@ class KarmaChecker(DispatchedBot):
                          message: discord.Message):
         if message.content[:7] == '!karma ':
             for mentioned_user in message.mentions:
-                await client.send_message(message.channel, self.form_karma_string(mentioned_user, game_data))
+                await message.channel.send(self.form_karma_string(mentioned_user, game_data))
 
     @staticmethod
     def form_karma_string(user, data):

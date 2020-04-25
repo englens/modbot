@@ -22,49 +22,52 @@ class GameData:
             json.dump(self.dic, f)
 
     def get_all_user_ids(self):
-        ids = [k for k in self.dic['users'].keys() if k != 'default']
+        ids = [int(k) for k in self.dic['users'].keys() if k != 'default']
         return ids
 
     # returns the value of given user value
     def grab_user_value(self, user_id, value_name):
-        if user_id not in self.dic['users']:
-            self.init_user(user_id)
+        id_str = str(user_id)
+        if id_str not in self.dic['users']:
+            self.init_user(id_str)
         try:
-            return self.dic['users'][user_id][value_name]
+            return self.dic['users'][id_str][value_name]
         except KeyError:
-            self.init_val(user_id, value_name)
-            return self.dic['users'][user_id][value_name]
+            self.init_val(id_str, value_name)
+            return self.dic['users'][id_str][value_name]
 
     # creates game data for user, based on dic[users][default]
-    def init_user(self, user_id):
-        self.dic['users'][user_id] = self.dic['users']['default'].copy()
+    def init_user(self, user_id_str):
+        self.dic['users'][user_id_str] = self.dic['users']['default'].copy()
         self.save()
 
-    def init_val(self, user_id, valname):
+    def init_val(self, user_id_str, valname):
         try:
-            self.dic['users'][user_id][valname] = self.dic['users']['default'][valname]
+            self.dic['users'][user_id_str][valname] = self.dic['users']['default'][valname]
         except Exception:
-            self.init_user(user_id)
+            self.init_user(user_id_str)
         self.save()
 
     def add_to_user_value(self, user_id, value_name, amount):
+        id_str = str(user_id)
         try:
-            self.dic['users'][user_id][value_name] += amount
+            self.dic['users'][id_str][value_name] += amount
         except KeyError:
-            if user_id not in self.dic['users']:
-                self.init_user(user_id)
-            self.dic['users'][user_id][value_name] = amount
-        print(f'user {user_id} gained {amount} {value_name}. Now {self.dic["users"][user_id][value_name]}.')
+            if id_str not in self.dic['users']:
+                self.init_user(id_str)
+            self.dic['users'][id_str][value_name] = amount
+        print(f'user {user_id} gained {amount} {value_name}. Now {self.dic["users"][id_str][value_name]}.')
         self.save()
 
     def set_user_value(self, user_id, value_name, new_val):
+        id_str = str(user_id)
         try:
-            self.dic['users'][user_id][value_name] = new_val
+            self.dic['users'][id_str][value_name] = new_val
         except KeyError:
-            if user_id not in self.dic['users']:
-                self.init_user(user_id)
-            self.dic['users'][user_id][value_name] = new_val
-        print(f'{value_name} set to {new_val} for {user_id}.')
+            if id_str not in self.dic['users']:
+                self.init_user(id_str)
+            self.dic['users'][id_str][value_name] = new_val
+        print(f'{value_name} set to {new_val} for {id_str}.')
         self.save()
 
 
@@ -108,7 +111,7 @@ class GeneralBot:
         # --- client events ---
         @client.event
         async def on_ready():
-            print('Online.')
+            print('Connected.')
             await self.call_event('on_ready')
 
         @client.event
@@ -122,6 +125,8 @@ class GeneralBot:
         @client.event
         async def on_reaction_remove(reaction, user):
             await self.call_event('on_reaction_remove', reaction, user)
+            
+        
 
     # runs code for event
     async def call_event(self, event_name: str, *event_args, **event_kwargs):

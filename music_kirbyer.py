@@ -1,7 +1,7 @@
 import re
 import discord
 from mod import DispatchedBot
-MUSIC_CHANNEL = ['451068243235307532']
+MUSIC_CHANNEL = [451068243235307532]
 
 
 def is_valid_music_link(msg):
@@ -16,13 +16,13 @@ class MusicKirbyer(DispatchedBot):
     # discovers the correct upvote and downvote emoji
     def setup_kirby(self, message: discord.message.Message):
         if self.kirby is None:
-            self.kirby = discord.utils.get(message.server.emojis, name='kirbyjam')
+            self.kirby = discord.utils.get(message.guild.emojis, name='kirbyjam')
             
     # reacts with upvote and downvote if in meme channel (defined with global)
     async def on_message(self, client, game_data, message):
         if message.channel.id in MUSIC_CHANNEL and is_valid_music_link(message.content):
             self.setup_kirby(message)
-            await client.add_reaction(message, self.kirby)
+            await message.add_reaction(self.kirby)
             print(f"User {message.user.id} posted new music.")
 
     # gives 1 music point to the user who posted the song

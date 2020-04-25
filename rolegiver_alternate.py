@@ -21,7 +21,7 @@ class RoleGiverAlternate(DispatchedBot):
                     if len(message.mentions) == 1:
                         target = message.mentions[0]
                     else:
-                        target = discord.utils.get(message.server.members, id=cmds[0])
+                        target = discord.utils.get(message.guild.members, id=cmds[0])
                     if target is not None and target is not message.author:
                         await self.replace_game_role(client, target, self.roles[cmds[1]], message)
         except Exception as e:
@@ -31,13 +31,13 @@ class RoleGiverAlternate(DispatchedBot):
         non_game_roles = [role for role in player.roles if role not in self.roles.values()]
         non_game_roles.append(new_role)
 
-        await client.send_message(message.channel, f"```Successfully given user {str(player)} role {str(new_role)}.```")
-        await client.delete_message(message)  # Done first to remove it asap
-        await client.replace_roles(player, *non_game_roles)
+        await message.channel.send(f"```Successfully given user {str(player)} role {str(new_role)}.```")
+        await message.delete()  # Done first to remove it asap
+        await player.edit(roles=non_game_roles)
         print(f'Player {player.nick} given role {new_role}')
 
     def check_and_setup_roles(self, message):
         if self.roles is None:
             self.roles = {}
             for name in role_names:
-                self.roles[name] = discord.utils.get(message.server.roles, name=name)
+                self.roles[name] = discord.utils.get(message.guild.roles, name=name)

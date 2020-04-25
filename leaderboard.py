@@ -16,7 +16,7 @@ class KarmaLeaderboard(DispatchedBot):
             # Only get users with karma
             members = []
             for i in game_data.get_all_user_ids():
-                u = discord.utils.get(message.server.members, id=i)
+                u = discord.utils.get(message.guild.members, id=i)
                 if u is not None:
                     members.append(u)
 
@@ -41,7 +41,7 @@ class KarmaLeaderboard(DispatchedBot):
             for i in range(5):
                 msg += lines[i] + ' ' + ' '*(max_len - len(lines[i])) + '| ' + str(round(user_scores[i][1], 2)) + '\n'
             msg += '```'
-            await client.send_message(message.channel, msg)
+            await message.channel.send(msg)
 
 
 def deEmojify(inputString):
