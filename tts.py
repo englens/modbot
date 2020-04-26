@@ -40,7 +40,7 @@ class TTSBot(DispatchedBot):
                 emote = random.choice(styles)
             url = await self.form_url(txt, emote)
             try:
-                filename, _ = await download_file(url)
+                filename, _ = await self.download_file(url)
             except urllib.error.HTTPError:
                 await message.channel.send('Error: HTTP Failed (server mad at us?)')
                 working = False
