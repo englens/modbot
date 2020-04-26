@@ -17,13 +17,13 @@ class TTSBot(DispatchedBot):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
     
-    async def form_url(text, style):
+    async def form_url(self, text, style):
         url = r'https://www.voicery.com/api/generate?text='
         url += urllib.parse.quote(text)
         url += f'&speaker=katie&style={style}&ssml=false'
         return url
     
-    async def download_file(url):
+    async def download_file(self, url):
         return urllib.request.urlretrieve(url, filename='./generate.mp3')
         
     # reacts with upvote and downvote if in meme channel (defined with global)
