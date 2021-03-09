@@ -1,6 +1,6 @@
 import discord
 from mod import DispatchedBot, GameData
-message_freebie_amt = 0.1
+message_freebie_amt = 0.01
 reaction_freebie_amt = 0.1
 
 

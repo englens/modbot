@@ -18,6 +18,11 @@ ADD_IN_PATH = Path('./add_ins/')
 KEY_PATH = Path('../modkey.txt')
 DATA_FILE = 'users.txt'
 
+# allows us to read member lists
+intents = discord.Intents.default()
+intents.members = True
+
+
 # returns the list of add_in classes
 # def get_add_ins(path):
 #     with open(path, 'r') as f:
@@ -36,7 +41,7 @@ def get_key(key_path):
 
 
 if __name__ == "__main__":
-    client = discord.Client()
+    client = discord.Client(intents=intents)
     bot = mod.GeneralBot(DATA_FILE, client)
 
     # ---Start bots here ---
