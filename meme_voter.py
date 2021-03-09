@@ -2,7 +2,7 @@ import discord
 from mod import DispatchedBot
 MEME_CHANNELS = [433344731930689536]
 # TEST_MEME_CHANNEL_ID = 448495055532195850
-DOWNVOTE_BLOCKED_USERS = [192786036743602176]
+DOWNVOTE_BLOCKED_USERS = [305732646640680960]
 UPVOTE_BLOCKED_USERS = []
 
 # gives memes an 'upvote' and 'downvote' button, using reactions
