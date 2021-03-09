@@ -41,7 +41,7 @@ class MemeVoter(DispatchedBot):
                 if user.id not in DOWNVOTE_BLOCKED_USERS:
                     await game_data.add_to_user_value(reaction.message.author.id, 'karma', -1)
                 else:
-                    reaction.remove(user)
+                    await reaction.remove(user)
                     print(user.name, "blocked from downvoting")
     # gives -1 karma to the user who posted the meme, 1 if downvote
     # doesnt block banned users, cause removing their reactions is what we want anyway
