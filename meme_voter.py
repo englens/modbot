@@ -2,7 +2,7 @@ import discord
 from mod import DispatchedBot
 MEME_CHANNELS = [433344731930689536]
 # TEST_MEME_CHANNEL_ID = 448495055532195850
-DOWNVOTE_BLOCKED_USERS = [305732646640680960]
+DOWNVOTE_BLOCKED_USERS = [192786036743602176]
 UPVOTE_BLOCKED_USERS = []
 
 # gives memes an 'upvote' and 'downvote' button, using reactions
@@ -43,10 +43,11 @@ class MemeVoter(DispatchedBot):
                 else:
                     await reaction.remove(user)
                     print(user.name, "blocked from downvoting")
+                    
     # gives -1 karma to the user who posted the meme, 1 if downvote
     # doesnt block banned users, cause removing their reactions is what we want anyway
     async def on_reaction_remove(self, client, game_data, reaction, user):
-        if reaction.message.channel.id in MEME_CHANNELS and not user.bot and user.id != reaction.message.author.id:
+        if reaction.message.channel.id in MEME_CHANNELS and user.id != client.id and user.id != reaction.message.author.id:
             self.setup_vote_emoji(reaction.message)
             if reaction.emoji == self.upvote:
                 game_data.add_to_user_value(reaction.message.author.id, 'karma', -1)
