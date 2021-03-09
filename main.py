@@ -1,6 +1,6 @@
 import mod
 import discord
-from meme_upvoter import MemeUpvoter
+from meme_voter import MemeVoter
 from karma_checker import KarmaChecker
 from freebie_karma import FreebieKarma
 from killgame import KillGame
@@ -45,7 +45,7 @@ if __name__ == "__main__":
     bot = mod.GeneralBot(DATA_FILE, client)
 
     # ---Start bots here ---
-    MemeUpvoter(bot)
+    MemeVoter(bot)
     KarmaChecker(bot)
     FreebieKarma(bot)
     RoleGiver(bot)
