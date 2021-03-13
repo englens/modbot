@@ -20,11 +20,11 @@ class MCCheck(DispatchedBot):
                 if len(fullstats.players) > 0:
                     playerstr = "Players: " + ', '.join(fullstats.players)
                 else:
-                    playerstr = "No Players Online"
+                    playerstr = "No Players Connected"
                 infostr = "Server Online -- " + playerstr
             except socket.timeout as timeout:
                 infostr = "Server Offline"
-            await message.channel.send(infostr)
+            await message.channel.send('```'+infost+'```')
 
     def get_ip(self):
         with open(IP_FILE) as f:
