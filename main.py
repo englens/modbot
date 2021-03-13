@@ -11,6 +11,7 @@ from leaderboard import KarmaLeaderboard
 from music_kirbyer import MusicKirbyer
 from dungeon import Dungeon
 from tts import TTSBot
+from mccheck import MCCheck
 
 from pathlib import Path
 ADD_IN_FILE = './add_ins/add_ins.json'
@@ -53,6 +54,7 @@ if __name__ == "__main__":
     KarmaLeaderboard(bot)
     MusicKirbyer(bot)
     TTSBot(bot)
+    MCCheck(bot)
     #Dungeon(bot)
     # ----------------------
     client.run(get_key(KEY_PATH))
