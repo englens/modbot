@@ -1,5 +1,6 @@
 import discord
 import socket
+from mcipc.query import Client
 from mod import DispatchedBot
 
 IP_FILE = "../mc_server_ip.txt"
