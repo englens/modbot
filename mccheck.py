@@ -15,7 +15,7 @@ class MCCheck(DispatchedBot):
     async def on_message(self, client, game_data, message):
         if message.content == '!server':
             try:
-                with Client(self.get_ip(), 25565, timeout=1.5) as client:
+                with Client(self.server_ip, 25565, timeout=1.5) as client:
                     fullstats = client.stats(full=True)
                 if len(fullstats.players) > 0:
                     playerstr = "Players: " + ', '.join(fullstats.players)
