@@ -24,7 +24,7 @@ class MCCheck(DispatchedBot):
                 infostr = "Server Online -- " + playerstr
             except socket.timeout as timeout:
                 infostr = "Server Offline"
-            await messsage.channel.send(infostr)
+            await message.channel.send(infostr)
 
     def get_ip(self):
         with open(IP_FILE) as f:
