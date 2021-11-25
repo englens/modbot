@@ -36,7 +36,13 @@ class KarmaLeaderboard(DispatchedBot):
             msg = '```----------Karma Leaderboard----------\n'
             lines = []
             for i in range(5):
-                lines.append(f'{i+1}) {deEmojify(user_scores[i][0])}')
+                try:
+                    lines.append(f'{i+1}) {deEmojify(user_scores[i][0])}')
+                except IndexError:
+                    print(f"Less than 5 users. Stopping at {i}")
+                    if i == 0:
+                        message.channel.send("Error: No users with karma currently!")
+                        return
             max_len = max([len(x) for x in lines])
             for i in range(5):
                 msg += lines[i] + ' ' + ' '*(max_len - len(lines[i])) + '| ' + str(round(user_scores[i][1], 2)) + '\n'
