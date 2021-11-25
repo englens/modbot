@@ -107,7 +107,7 @@ class GeneralBot:
         self.game_data = GameData(game_data_file)
         self.handler_dispatcher = GameEventHandlerDispatcher()
         self.help = '---- Command List ----\n'
-
+        
         # --- client events ---
         @client.event
         async def on_ready():
@@ -163,7 +163,7 @@ class GameEventHandlerDispatcher:
 # (subclass me)
 # Todo: may want to make subclasses with shared functionality
 class DispatchedBot:
-    def __init__(self, bot: GeneralBot, helpstr: str = ''):
+    def __init__(self, bot: GeneralBot, *, helpstr: str = ''):
         if helpstr != '':
             bot.add_help_line(helpstr)
         bot.register_event_handler('on_ready', self.on_ready)
