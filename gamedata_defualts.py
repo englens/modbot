@@ -5,5 +5,5 @@ default_vals = {
 }
 
 default_gamedata_dict = {
-    'user': {}
+    'users': {}
 }
