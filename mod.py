@@ -84,6 +84,7 @@ class GeneralBot:
         self.client = client  # discord.py bot client
         self.game_data = GameData(game_data_file)
         self.handler_dispatcher = GameEventHandlerDispatcher()
+        self.help = '---- Command List ----\n'
 
         # --- client events ---
         @client.event
@@ -112,6 +113,9 @@ class GeneralBot:
     def register_event_handler(self, event_name: str, handler):
         self.handler_dispatcher.add_handler(handler, event_name)
 
+    # adds to the help msg, displayed when !help is callled
+    def add_help_line(self, newline):
+        self.help += '\n' + newline
 
 # Allows for multiple copies of events, so I can write multiple mod functions for the same bot.
 # for each event, calls each event handler with client, game_data, and event-specific params.
@@ -137,11 +141,17 @@ class GameEventHandlerDispatcher:
 # (subclass me)
 # Todo: may want to make subclasses with shared functionality
 class DispatchedBot:
-    def __init__(self, bot: GeneralBot):
+    def __init__(self, bot: GeneralBot, helpstr: str = ''):
+        if helpstr != '':
+            bot.add_help_line(helpstr)
         bot.register_event_handler('on_ready', self.on_ready)
         bot.register_event_handler('on_message', self.on_message)
         bot.register_event_handler('on_reaction_add', self.on_reaction_add)
         bot.register_event_handler('on_reaction_remove', self.on_reaction_remove)
+        self.bot = bot
+
+    async def get_help_string(self) -> str:
+        return self.bot.help
 
     async def on_ready(self, client: discord.Client, game_data: GameData):
         pass

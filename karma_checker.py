@@ -3,6 +3,9 @@ from mod import DispatchedBot
 
 
 class KarmaChecker(DispatchedBot):
+    def __init__(self, *args, **kwargs):
+        help = "!karma <@user> -- fetches the current karma of a user"
+        super().__init__(helpstr=help, *args, **kwargs)
     async def on_message(self, client: discord.Client, game_data,
                          message: discord.Message):
         if message.content[:7] == '!karma ':

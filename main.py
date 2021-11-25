@@ -3,15 +3,17 @@ import discord
 from meme_voter import MemeVoter
 from karma_checker import KarmaChecker
 from freebie_karma import FreebieKarma
-from killgame import KillGame
 from rolegiver import RoleGiver
-from rolegiver_alternate import RoleGiverAlternate
 from manual_mode import ManualMode
 from leaderboard import KarmaLeaderboard
+
 from music_kirbyer import MusicKirbyer
-from dungeon import Dungeon
-from tts import TTSBot
-from mccheck import MCCheck
+# ---- Disabled bot imports ----
+#from dungeon import Dungeon
+#from mccheck import MCCheck
+#from killgame import KillGame
+#from rolegiver_alternate import RoleGiverAlternate
+#from tts import TTSBot
 
 from pathlib import Path
 ADD_IN_FILE = './add_ins/add_ins.json'
@@ -45,16 +47,17 @@ if __name__ == "__main__":
     client = discord.Client(intents=intents)
     bot = mod.GeneralBot(DATA_FILE, client)
 
-    # ---Start bots here ---
+    # ----- Start bots here -----
+    # Command help text is displayed in this order
     MemeVoter(bot)
     KarmaChecker(bot)
     FreebieKarma(bot)
-    RoleGiver(bot)
+    #RoleGiver(bot)
     ManualMode(bot)
     KarmaLeaderboard(bot)
     MusicKirbyer(bot)
-    TTSBot(bot)
-    MCCheck(bot)
+    #TTSBot(bot)
+    #MCCheck(bot)
     #Dungeon(bot)
     # ----------------------
     client.run(get_key(KEY_PATH))

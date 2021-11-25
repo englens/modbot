@@ -3,7 +3,7 @@ from mod import DispatchedBot
 command_channel_id = 599484428296650772
 send_to_channel_id = 184877960694726656
 
-
+# Echos all posts on the specified channel back to the main channel, allowing a sort of control of modbot
 class ManualMode(DispatchedBot):
     def __init__(self, *args, **kwargs):
         self.roles = None

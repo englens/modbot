@@ -11,8 +11,8 @@ regex = r"\s*!voice -(angry|whispering|conversational|flirty|flustered|happy|nar
 styles=['angry', 'whispering', 'conversational', 'flirty', 'flustered', 
         'happy', 'narriation', 'sad', 'scared']
 
-# gives memes an 'upvote' and 'downvote' button, using reactions
-# tracks karma to game_data[users][user_id][karma]
+# An old experiment that used a public api to generate voice-to-text files
+# broken and disabled now
 class TTSBot(DispatchedBot):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

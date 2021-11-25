@@ -2,13 +2,13 @@ import discord
 from mod import DispatchedBot
 
 
-# gives memes an 'upvote' and 'downvote' button, using reactions
-# tracks karma to game_data[users][user_id][karma]
+# Displays a list of the top highest karma users
 class KarmaLeaderboard(DispatchedBot):
     def __init__(self, *args, **kwargs):
         self.upvote = None
         self.downvote = None
-        super().__init__(*args, **kwargs)
+        help = '!leaderboard -- Display the 5 users with the highest karma'
+        super().__init__(help, *args, **kwargs)
 
     # reacts with upvote and downvote if in meme channel (defined with global)
     async def on_message(self, client, game_data, message):

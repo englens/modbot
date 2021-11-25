@@ -1,14 +1,17 @@
 import discord
 from mod import DispatchedBot
 
-
+# Allows users to give themselves a role based on the list of allowed roles
+# Optionaly they arn't allowed to change their role once they have one
 class RoleGiver(DispatchedBot):
     allow_replace = True
     role_names = ['cringe', 'based']
 
     def __init__(self, *args, **kwargs):
         self.roles = None
-        super().__init__(*args, **kwargs)
+        help = '!role <rolename> --- assign yourself a role from the list'
+        help += f'    current valid roles: {RoleGiver.role_names}'
+        super().__init__(helpstr=help, *args, **kwargs)
 
     # Checks if user has a role on the role list, and gives them the role and replaces it if necessary
     async def on_message(self, client: discord.Client, game_data,

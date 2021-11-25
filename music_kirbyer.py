@@ -7,7 +7,7 @@ MUSIC_CHANNEL = [451068243235307532]
 def is_valid_music_link(msg):
     return re.match(r'.*https:\/\/www\.youtube\.com\/watch.*', msg) is not None
     
-    
+# Reacts to all yotube posts on the music channel with a groovin kirby emoji
 class MusicKirbyer(DispatchedBot):
     def __init__(self, *args, **kwargs):
         self.kirby = None
