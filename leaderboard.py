@@ -44,8 +44,8 @@ class KarmaLeaderboard(DispatchedBot):
                         message.channel.send("Error: No users with karma currently!")
                         return
             max_len = max([len(x) for x in lines])
-            for i in range(5):
-                msg += lines[i] + ' ' + ' '*(max_len - len(lines[i])) + '| ' + str(round(user_scores[i][1], 2)) + '\n'
+            for i, line in enumerate(lines):
+                msg += line + ' ' + ' '*(max_len - len(line)) + '| ' + str(round(user_scores[i][1], 2)) + '\n'
             msg += '```'
             await message.channel.send(msg)
 
