@@ -1,7 +1,7 @@
 import json
 import discord
 import sqlite3
-
+from gamedata_defualts import default_vals, default_gamedata_dict
 
 # handles getting of user information, and storing updates automatically
 # if called for a unregistered user, init them
@@ -13,8 +13,13 @@ class GameData:
 
     # read userdata from file. Only do this when class created.
     def load_from_file(self):
-        with open(self.file, 'r') as f:
-            self.dic = json.load(f)
+        try:
+            with open(self.file, 'r') as f:
+                self.dic = json.load(f)
+        except FileNotFoundError:
+            print('No Gamedata file found. Creating empty dict')
+            # This isnt saved yet, only when a value is changed
+            self.dic = default_gamedata_dict
 
     # save userdata to file
     # this is called after every change
@@ -22,32 +27,46 @@ class GameData:
         with open(self.file, 'w') as f:
             json.dump(self.dic, f)
 
-    # creates game data for user, based on dic[users][default]
+    # creates empty game data for user
+    # Has no data to start, that is created later when needed
     def init_user(self, user_id_str):
-        self.dic['users'][user_id_str] = self.dic['users']['default'].copy()
+        self.dic['users'][user_id_str] = {}
         self.save()
         
     # internal function to create a new value for a user who doesnt have it filled yet
+    # Values are fetched from gamedata_defaults.py
     def init_val(self, user_id_str, valname):
+        # Check if value exists
         try:
-            self.dic['users'][user_id_str][valname] = self.dic['users']['default'][valname]
-        except Exception:
+            def_val = default_vals[valname]
+        except KeyError as e:
+            print('Error: Tried to default unknown gamedata value')
+            raise e
+        # Add it to user dict
+        try:
+            self.dic['users'][user_id_str][valname] = def_val
+        except KeyError:
+            print(f'Added new user to game database: {user_id_str}')
             self.init_user(user_id_str)
+            self.dic['users'][user_id_str][valname] = def_val
         self.save()
         
     # returns list of all ids present in userdata
     def get_all_user_ids(self):
-        ids = [int(k) for k in self.dic['users'].keys() if k != 'default']
+        ids = [int(k) for k in self.dic['users'].keys()]
         return ids
         
     # returns the value of given user value
     def grab_user_value(self, user_id, value_name):
+        # Init user if not currently in dict
         id_str = str(user_id)
         if id_str not in self.dic['users']:
             self.init_user(id_str)
+
         try:
             return self.dic['users'][id_str][value_name]
         except KeyError:
+            # Init value if not yet in dict
             self.init_val(id_str, value_name)
             return self.dic['users'][id_str][value_name]
     
@@ -57,9 +76,11 @@ class GameData:
         try:
             self.dic['users'][id_str][value_name] += amount
         except KeyError:
+            # Init user if not currently in dict
             if id_str not in self.dic['users']:
                 self.init_user(id_str)
-            self.dic['users'][id_str][value_name] = amount
+            self.init_val(id_str, value_name)
+            self.dic['users'][id_str][value_name] += amount
         print(f'user {user_id} gained {amount} {value_name}. Now {self.dic["users"][id_str][value_name]}.')
         self.save()
         
@@ -69,6 +90,7 @@ class GameData:
         try:
             self.dic['users'][id_str][value_name] = new_val
         except KeyError:
+            # Init user if not currently in dict
             if id_str not in self.dic['users']:
                 self.init_user(id_str)
             self.dic['users'][id_str][value_name] = new_val
