@@ -163,6 +163,7 @@ class GameEventHandlerDispatcher:
 # (subclass me)
 # Todo: may want to make subclasses with shared functionality
 class DispatchedBot:
+    # Note that helpstr is keyword only
     def __init__(self, bot: GeneralBot, *, helpstr: str = ''):
         if helpstr != '':
             bot.add_help_line(helpstr)

@@ -8,7 +8,7 @@ class KarmaLeaderboard(DispatchedBot):
         self.upvote = None
         self.downvote = None
         help = '!leaderboard -- Display the 5 users with the highest karma'
-        super().__init__(help, *args, **kwargs)
+        super().__init__(helpstr=help, *args, **kwargs)
 
     # reacts with upvote and downvote if in meme channel (defined with global)
     async def on_message(self, client, game_data, message):
