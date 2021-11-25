@@ -2,7 +2,7 @@ import discord, traceback
 from mod import DispatchedBot
 role_names = ['liv', 'ded', 'liv inactive', 'ded inactive']
 
-
+# A game where people can 'kill' eachother only if they're
 class KillGame(DispatchedBot):
     def __init__(self, *args, **kwargs):
         self.roles = None
