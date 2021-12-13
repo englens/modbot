@@ -79,6 +79,7 @@ class MemeVoter(DispatchedBot):
         user = payload.member
 
         msg : discord.Message = await self.get_message_object_from_payload(client, payload)
+        print(type(client))
         assert(type(client) == discord.Client)
         assert (type(user) == discord.Member)
         assert (type(msg) == discord.Message)
