@@ -66,7 +66,7 @@ class MemeVoter(DispatchedBot):
             message_id
             user_id"""
 
-    async def get_message_object_from_payload(client: discord.Client, payload: discord.RawReactionActionEvent):
+    async def get_message_object_from_payload(self, client: discord.Client, payload: discord.RawReactionActionEvent):
         msg_id = payload.message_id
         channel_id = payload.channel_id
         channel: discord.TextChannel = await client.fetch_channel(channel_id)
