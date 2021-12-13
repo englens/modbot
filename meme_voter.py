@@ -15,7 +15,7 @@ class MemeVoter(DispatchedBot):
         super().__init__(*args, **kwargs)
 
     # discovers the correct upvote and downvote emoji
-    def setup_vote_emoji(self, message: discord.message.Message):
+    def setup_vote_emoji_if_unset(self, message: discord.message.Message):
         if self.upvote is None:
             self.upvote = discord.utils.get(message.guild.emojis, name='upvote')
         if self.downvote is None:
@@ -24,14 +24,14 @@ class MemeVoter(DispatchedBot):
     # reacts with upvote and downvote if in meme channel (defined with global)
     async def on_message(self, client, game_data, message):
         if message.channel.id in MEME_CHANNELS:
-            self.setup_vote_emoji(message)
+            self.setup_vote_emoji_if_unset(message)
             await message.add_reaction(self.downvote)
             await message.add_reaction(self.upvote)
-
+    """
     # gives 1 karma to the user who posted the meme, -1 if downvote
     async def on_reaction_add(self, client, game_data, reaction, user):
         if reaction.message.channel.id in MEME_CHANNELS and not user.bot and user.id != reaction.message.author.id:
-            self.setup_vote_emoji(reaction.message)
+            self.setup_vote_emoji_if_unset(reaction.message)
             if reaction.emoji == self.upvote:
                 if user.id not in UPVOTE_BLOCKED_USERS:
                     game_data.add_to_user_value(reaction.message.author.id, 'karma', 1)
@@ -49,8 +49,55 @@ class MemeVoter(DispatchedBot):
     # doesnt block banned users, cause removing their reactions is what we want anyway
     async def on_reaction_remove(self, client, game_data, reaction, user):
         if reaction.message.channel.id in MEME_CHANNELS and user.id != client.id and user.id != reaction.message.author.id:
-            self.setup_vote_emoji(reaction.message)
+            self.setup_vote_emoji_if_unset(reaction.message)
             if reaction.emoji == self.upvote:
                 game_data.add_to_user_value(reaction.message.author.id, 'karma', -1)
             if reaction.emoji == self.downvote:
                 game_data.add_to_user_value(reaction.message.author.id, 'karma', 1)
+    """
+
+    # Payload: 
+    """discord.RawReactionActionEvent : 
+            channel_id
+            emoji
+            event_type
+            guild_id
+            member
+            message_id
+            user_id"""
+
+    async def get_message_object_from_payload(client: discord.Client, payload: discord.RawReactionActionEvent):
+        msg_id = payload.message_id
+        channel_id = payload.channel_id
+        channel: discord.TextChannel = await client.fetch_channel(channel_id)
+        return await channel.fetch_message(msg_id)
+
+
+    async def on_raw_reaction_add(self, client, game_data, payload: discord.RawReactionActionEvent):
+        user = payload.member
+        msg : discord.Message = await self.get_message_object_from_payload(client, payload)
+        if msg.channel.id in MEME_CHANNELS and user.id != client.id and user.id != msg.author.id:
+            if payload.emoji == self.upvote:
+                if user.id not in UPVOTE_BLOCKED_USERS:
+                    game_data.add_to_user_value(msg.author.id, 'karma', 1)
+                else:
+                    await msg.remove_reaction(user)
+                    print(user.name, "blocked from upvoting")
+            if payload.emoji == self.downvote:
+                if user.id not in DOWNVOTE_BLOCKED_USERS:
+                    await game_data.add_to_user_value(msg.author.id, 'karma', -1)
+                else:
+                    await msg.remove_reaction(user)
+                    print(user.name, "blocked from downvoting")
+
+
+    async def on_raw_reaction_remove(self, client, game_data, payload: discord.RawReactionActionEvent):
+        user = payload.member
+        msg : discord.Message = await self.get_message_object_from_payload(client, payload)
+        
+        if msg.channel.id in MEME_CHANNELS and user.id != client.id and user.id != msg.author.id:
+            self.setup_vote_emoji_if_unset(msg)
+            if payload.emoji == self.upvote:
+                game_data.add_to_user_value(msg.author.id, 'karma', -1)
+            if payload.emoji == self.downvote:
+                game_data.add_to_user_value(msg.author.id, 'karma', 1)
