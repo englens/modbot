@@ -71,7 +71,7 @@ class GameData:
             return self.dic['users'][id_str][value_name]
     
     # Add value to (rather than replace) a user value
-    def add_to_user_value(self, user_id, value_name, amount):
+    def add_to_user_value(self, user_id, value_name, amount, do_log=True):
         id_str = str(user_id)
         try:
             self.dic['users'][id_str][value_name] += amount
@@ -81,7 +81,8 @@ class GameData:
                 self.init_user(id_str)
             self.init_val(id_str, value_name)
             self.dic['users'][id_str][value_name] += amount
-        print(f'user {user_id} gained {amount} {value_name}. Now {self.dic["users"][id_str][value_name]}.')
+        if do_log:
+            print(f'user {user_id} gained {amount} {value_name}. Now {self.dic["users"][id_str][value_name]}.')
         self.save()
         
     # replace the value of a user value -- inits it if needed
@@ -133,7 +134,7 @@ class GeneralBot:
         @client.event
         async def on_raw_reaction_remove(payload):
             await self.call_event('on_raw_reaction_remove', payload)
-            
+
     # runs code for event
     async def call_event(self, event_name: str, *event_args, **event_kwargs):
         await self.handler_dispatcher.dispatch_event(event_name, self.client, self.game_data,
