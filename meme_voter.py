@@ -83,14 +83,14 @@ class MemeVoter(DispatchedBot):
             if payload.emoji == self.upvote:
                 if user.id not in UPVOTE_BLOCKED_USERS:
                     game_data.add_to_user_value(msg.author.id, 'karma', UPVOTE_VALUE)
-                    print(f'{msg.author.name} earned {UPVOTE_VALUE} karma from an upvote')
+                    #print(f'{msg.author.name} earned {UPVOTE_VALUE} karma from an upvote')
                 else:
                     await msg.remove_reaction(user)
                     print(user.name, "blocked from upvoting")
             if payload.emoji == self.downvote:
                 if user.id not in DOWNVOTE_BLOCKED_USERS:
                     await game_data.add_to_user_value(msg.author.id, 'karma', DOWNVOTE_VALUE)
-                    print(f'{msg.author.name} lost {DOWNVOTE_VALUE} karma from a downvote')
+                    #print(f'{msg.author.name} lost {DOWNVOTE_VALUE} karma from a downvote')
                 else:
                     await msg.remove_reaction(user)
                     print(user.name, "blocked from downvoting")
@@ -107,7 +107,7 @@ class MemeVoter(DispatchedBot):
             self.setup_vote_emoji_if_unset(msg)
             if payload.emoji == self.upvote:
                 game_data.add_to_user_value(msg.author.id, 'karma', DOWNVOTE_VALUE)
-                print(f'{msg.author.name} had their upvote removed; lost {DOWNVOTE_VALUE} karma')
+                #print(f'{msg.author.name} had their upvote removed; lost {DOWNVOTE_VALUE} karma')
             if payload.emoji == self.downvote:
                 game_data.add_to_user_value(msg.author.id, 'karma', UPVOTE_VALUE)
-                print(f'{msg.author.name} had their downvote removed; regained {UPVOTE_VALUE} karma')
+                #print(f'{msg.author.name} had their downvote removed; regained {UPVOTE_VALUE} karma')
