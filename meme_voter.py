@@ -78,7 +78,8 @@ class MemeVoter(DispatchedBot):
     async def on_raw_reaction_add(self, client, game_data, payload: discord.RawReactionActionEvent):
         user = payload.member  # only the 'add' payload has access to  this
         msg : discord.Message = await self.get_message_object_from_payload(client, payload)
-
+        self.setup_vote_emoji_if_unset(msg)
+        
         if msg.channel.id in MEME_CHANNELS and user.id != client.user.id and user.id != msg.author.id:
             if payload.emoji == self.upvote:
                 if user.id not in UPVOTE_BLOCKED_USERS:
