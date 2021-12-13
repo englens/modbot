@@ -1,4 +1,5 @@
 import discord
+from discord.message import Message
 from mod import DispatchedBot
 MEME_CHANNELS = [433344731930689536]
 # TEST_MEME_CHANNEL_ID = 448495055532195850
@@ -76,7 +77,11 @@ class MemeVoter(DispatchedBot):
     async def on_raw_reaction_add(self, client, game_data, payload: discord.RawReactionActionEvent):
         print('got reaction event')
         user = payload.member
+
         msg : discord.Message = await self.get_message_object_from_payload(client, payload)
+        
+        assert (type(user) == discord.Member)
+        assert (type(msg) == discord.Message)
         if msg.channel.id in MEME_CHANNELS and user.id != client.id and user.id != msg.author.id:
             if payload.emoji == self.upvote:
                 if user.id not in UPVOTE_BLOCKED_USERS:
