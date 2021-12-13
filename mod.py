@@ -125,6 +125,14 @@ class GeneralBot:
         @client.event
         async def on_reaction_remove(reaction, user):
             await self.call_event('on_reaction_remove', reaction, user)
+        
+        @client.event
+        async def on_raw_reaction_add(payload):
+            await self.call_event('on_raw_reaction_add', payload)
+        
+        @client.event
+        async def on_raw_reaction_remove(payload):
+            await self.call_event('on_raw_reaction_remove', payload)
             
     # runs code for event
     async def call_event(self, event_name: str, *event_args, **event_kwargs):
@@ -146,7 +154,9 @@ class GameEventHandlerDispatcher:
         self.handlers = {"on_message": [],
                          "on_ready": [],
                          "on_reaction_add": [],
-                         "on_reaction_remove": []}
+                         "on_reaction_remove": [],
+                         "on_raw_reaction_add": [],
+                         "on_raw_reaction_remove": []}
 
     # runs each handler for a given event
     async def dispatch_event(self, event_name, client, game_data, *event_args, **event_kwargs):
@@ -171,6 +181,8 @@ class DispatchedBot:
         bot.register_event_handler('on_message', self.on_message)
         bot.register_event_handler('on_reaction_add', self.on_reaction_add)
         bot.register_event_handler('on_reaction_remove', self.on_reaction_remove)
+        bot.register_event_handler('on_raw_reaction_add', self.on_raw_reaction_add)
+        bot.register_event_handler('on_raw_reaction_remove', self.on_raw_reaction_remove)
         self.bot = bot
 
     async def get_help_string(self) -> str:
@@ -189,4 +201,12 @@ class DispatchedBot:
 
     async def on_reaction_remove(self, client: discord.Client, game_data: GameData,
                                  reaction: discord.Reaction, user: discord.User):
+        pass
+
+    async def on_raw_reaction_add(self, client: discord.Client, game_data: GameData, 
+                                payload: discord.RawReactionActionEvent):
+        pass
+
+    async def on_raw_reaction_remove(self, client: discord.Client, game_data: GameData,
+                                payload: discord.RawReactionActionEvent):
         pass
