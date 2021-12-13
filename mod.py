@@ -86,7 +86,7 @@ class GameData:
         self.save()
         
     # replace the value of a user value -- inits it if needed
-    def set_user_value(self, user_id, value_name, new_val):
+    def set_user_value(self, user_id, value_name, new_val, do_log=True):
         id_str = str(user_id)
         try:
             self.dic['users'][id_str][value_name] = new_val
@@ -95,7 +95,8 @@ class GameData:
             if id_str not in self.dic['users']:
                 self.init_user(id_str)
             self.dic['users'][id_str][value_name] = new_val
-        print(f'{value_name} set to {new_val} for {id_str}.')
+        if do_log:
+            print(f'{value_name} set to {new_val} for {id_str}.')
         self.save()
 
 
