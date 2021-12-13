@@ -83,7 +83,7 @@ class MemeVoter(DispatchedBot):
         assert(type(client) == discord.Client)
         assert (type(user) == discord.Member)
         assert (type(msg) == discord.Message)
-        if msg.channel.id in MEME_CHANNELS and user.id != client.id and user.id != msg.author.id:
+        if msg.channel.id in MEME_CHANNELS and user.id != client.user.id and user.id != msg.author.id:
             if payload.emoji == self.upvote:
                 if user.id not in UPVOTE_BLOCKED_USERS:
                     game_data.add_to_user_value(msg.author.id, 'karma', 1)
@@ -102,7 +102,7 @@ class MemeVoter(DispatchedBot):
         user = payload.member
         msg : discord.Message = await self.get_message_object_from_payload(client, payload)
         
-        if msg.channel.id in MEME_CHANNELS and user.id != client.id and user.id != msg.author.id:
+        if msg.channel.id in MEME_CHANNELS and user.id != client.user.id and user.id != msg.author.id:
             self.setup_vote_emoji_if_unset(msg)
             if payload.emoji == self.upvote:
                 game_data.add_to_user_value(msg.author.id, 'karma', -1)
