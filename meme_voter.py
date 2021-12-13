@@ -75,14 +75,9 @@ class MemeVoter(DispatchedBot):
 
 
     async def on_raw_reaction_add(self, client, game_data, payload: discord.RawReactionActionEvent):
-        print('got reaction event')
-        user = payload.member
-
+        user = payload.member  # only the 'add' payload has access to  this
         msg : discord.Message = await self.get_message_object_from_payload(client, payload)
-        print(type(client))
-        assert(type(client) == discord.Client)
-        assert (type(user) == discord.Member)
-        assert (type(msg) == discord.Message)
+
         if msg.channel.id in MEME_CHANNELS and user.id != client.user.id and user.id != msg.author.id:
             if payload.emoji == self.upvote:
                 if user.id not in UPVOTE_BLOCKED_USERS:
@@ -97,9 +92,12 @@ class MemeVoter(DispatchedBot):
                     await msg.remove_reaction(user)
                     print(user.name, "blocked from downvoting")
 
+    async def get_reaction_remove_member_object(self, client: discord.Client, payload: discord.RawReactionActionEvent):
+        guild = await client.fetch_guild(payload.guild_id)
+        return await guild.fetch_member(payload.user_id)
 
     async def on_raw_reaction_remove(self, client, game_data, payload: discord.RawReactionActionEvent):
-        user = payload.member
+        user: discord.Member  = await self.get_reaction_remove_member_object(client, payload)
         msg : discord.Message = await self.get_message_object_from_payload(client, payload)
         
         if msg.channel.id in MEME_CHANNELS and user.id != client.user.id and user.id != msg.author.id:
