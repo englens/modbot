@@ -74,6 +74,7 @@ class MemeVoter(DispatchedBot):
 
 
     async def on_raw_reaction_add(self, client, game_data, payload: discord.RawReactionActionEvent):
+        print('got reaction event')
         user = payload.member
         msg : discord.Message = await self.get_message_object_from_payload(client, payload)
         if msg.channel.id in MEME_CHANNELS and user.id != client.id and user.id != msg.author.id:
