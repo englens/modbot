@@ -159,7 +159,7 @@ class RPSWorld(DispatchedBot):
             return
         other: discord.Member = message.mentions[0]
         rating = self.get_user_rating(game_data, other)
-        await message.channel.send(f"{other.display_name}'s Elo: {rating.mu}")
+        await message.channel.send(f"{other.display_name}'s Elo: {round(rating.mu, 2)}")
 
 
     # Called when !challenge is called during default state
@@ -259,7 +259,7 @@ class RPSWorld(DispatchedBot):
         await asyncio.sleep(2)
         await self.fight_channel.send(f"**{self.fighterA_response}**!")
         await asyncio.sleep(2)
-        await self.fight_channel.send(f"And, {self.fighterB.display_name}'s throw is...")
+        await self.fight_channel.send(f"{self.fighterB.display_name}'s throw is...")
         await asyncio.sleep(2)
         await self.fight_channel.send(f"**{self.fighterB_response}**!")
         await asyncio.sleep(3)
@@ -273,13 +273,17 @@ class RPSWorld(DispatchedBot):
         await self.fight_channel.send("And the winner is...")
         await asyncio.sleep(1)
         if is_tie:
-            msg = 'Its a tie!!'
+            msg = '**Its a tie!!**'
         else:
-            msg = f'{winner.display_name}!!'
+            msg = f'**{winner.display_name}!!**'
         winner_new_elo, loser_new_elo = await self.calc_elo(gamedata, winner, loser, is_tie)
-        msg += f'\n\n{winner.display_name} new elo: {round(winner_new_elo, 2)}\n{loser.display_name} new elo: {round(loser_new_elo,2)}'
+        msg += '\n==========================='
+        msg += f'\n{winner.display_name} new elo: {round(winner_new_elo, 2)}\n{loser.display_name} new elo: {round(loser_new_elo,2)}'
         if is_matchup_new:
-            msg += f'\nNew matchup: {winner_throw} beats {loser_throw}.'
+            mid = '    ' + str(winner_throw) + ' BEATS ' + str(loser_throw) + '    '
+            top = max((len(mid)-13)/2, 2)*'=' + ' New matchup ' + max((len(mid)-13)/2, 2)*'='
+            bot = len(mid)*'='
+            msg += top + '\n' + mid + '\n' + bot
         await self.fight_channel.send(msg)
         self.state = 'default'
 
