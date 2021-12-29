@@ -159,7 +159,7 @@ class RPSWorld(DispatchedBot):
             return
         other: discord.Member = message.mentions[0]
         rating = self.get_user_rating(game_data, other)
-        await message.channel.send(f"{other.nick}'s Elo: {rating.mu}")
+        await message.channel.send(f"{other.display_name}'s Elo: {rating.mu}")
 
 
     # Called when !challenge is called during default state
@@ -183,7 +183,7 @@ class RPSWorld(DispatchedBot):
         # Also start callback to cancel if 60 seconds pass
 
         # Create task and set it. This is so we can gracefully cancel the callback if the accept or deny happens
-        await message.channel.send(f"{other.nick}, please respond with 'accept' or 'deny'.")
+        await message.channel.send(f"{other.display_name}, please respond with 'accept' or 'deny'.")
         self.fighterB_response_task = asyncio.create_task(self.wait_for_challenge_accept(message))
     
     # get the winner from the throw database, or create a new matchup if none exists
@@ -244,11 +244,11 @@ class RPSWorld(DispatchedBot):
     async def finish_match(self, gamedata):
         await self.fight_channel.send('Both throws accepted!')
         await asyncio.sleep(1)
-        await self.fight_channel.send(f"{self.fighterA.nick}'s throw is...")
+        await self.fight_channel.send(f"{self.fighterA.display_name}'s throw is...")
         await asyncio.sleep(2)
         await self.fight_channel.send(f"**{self.fighterA_response}**!")
         await asyncio.sleep(2)
-        await self.fight_channel.send(f"And, {self.fighterB.nick}'s throw is...")
+        await self.fight_channel.send(f"And, {self.fighterB.display_name}'s throw is...")
         await asyncio.sleep(2)
         await self.fight_channel.send(f"**{self.fighterB_response}**!")
         await asyncio.sleep(3)
@@ -264,9 +264,9 @@ class RPSWorld(DispatchedBot):
         if is_tie:
             msg = 'Its a tie!!'
         else:
-            msg = f'{winner.nick}!!'
+            msg = f'{winner.display_name}!!'
         winner_new_elo, loser_new_elo = await self.calc_elo(winner, loser, is_tie)
-        msg += f'\n\n{winner.nick} new elo: {winner_new_elo}\n{loser.nick} new elo: {loser_new_elo}'
+        msg += f'\n\n{winner.display_name} new elo: {winner_new_elo}\n{loser.display_name} new elo: {loser_new_elo}'
         if is_matchup_new:
             msg += f'New matchup: {winner_throw} beats {loser_throw}.'
         await self.fight_channel.send(msg)
@@ -275,7 +275,7 @@ class RPSWorld(DispatchedBot):
     # Called when fighterA sends a throw during wait_for_throw
     async def got_fighterA_throw(self, gamedata, throw):
         self.fighterA_response = throw
-        await self.fight_channel.send(f"Got {self.fighterA.nick}'s throw.")
+        await self.fight_channel.send(f"Got {self.fighterA.display_name}'s throw.")
         # If both now ready, start match result printout
         if self.fighterB_response != None:
             self.response_timeout_task.cancel()
@@ -285,7 +285,7 @@ class RPSWorld(DispatchedBot):
     # Called when fighterB sends a throw during wait_for_throw
     async def got_fighterB_throw(self, gamedata, throw):
         self.fighterA_response = throw
-        await self.fight_channel.send(f"Got {self.fighterB.nick}'s throw.")
+        await self.fight_channel.send(f"Got {self.fighterB.display_name}'s throw.")
         # If both now ready, start match result printout
         if self.fighterA_response != None:
             self.response_timeout_task.cancel()
@@ -313,11 +313,11 @@ class RPSWorld(DispatchedBot):
             elif self.fighterA_response is None:
                 # player B wins by default
                 # TODO: award elo
-                await self.fight_channel.send(f"{self.fighterB.nick} wins by default, but cark hasn't implemented this changing elo yet so it doesn't matter!")
+                await self.fight_channel.send(f"{self.fighterB.display_name} wins by default, but cark hasn't implemented this changing elo yet so it doesn't matter!")
             elif self.fighterB_response is None:
                 # player A wins by default
                 # TODO: award elo
-                await self.fight_channel.send(f"{self.fighterA.nick} wins by default, but cark hasn't implemented this changing elo yet so it doesn't matter!")
+                await self.fight_channel.send(f"{self.fighterA.display_name} wins by default, but cark hasn't implemented this changing elo yet so it doesn't matter!")
             else: 
                 print("Something wrong happened!")
             self.state = 'default'
