@@ -120,7 +120,7 @@ class RPSWorld(DispatchedBot):
                 return
             # Test 4: make sure its a valid throw
             tokens = message.content.split()
-            if len(tokens != 1):
+            if len(tokens) != 1:
                 await message.channel.send("Please send only a single word throw.")
                 return
             throw = tokens[0].lower()
@@ -173,6 +173,9 @@ class RPSWorld(DispatchedBot):
             return
         other: discord.Member = message.mentions[0]
 
+        if other.id == message.author.id:
+            await message.channel.send("Error: You can't challenge yourself.")
+            return
         # Set fight parameters for this match
         self.fight_channel = message.channel
         self.fighterA = message.author
