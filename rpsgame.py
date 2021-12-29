@@ -202,7 +202,9 @@ class RPSWorld(DispatchedBot):
         # fetch the winner (or None if not defined)
         winner = get_winner(nodeA, nodeB)
         # TODO: implement ties?
+        
         if winner is None:
+            is_matchup_new = True
             # not yet defined
             # we need to define one
             winner = random.choice(nodeA, nodeB)
@@ -210,14 +212,16 @@ class RPSWorld(DispatchedBot):
                 set_winner(nodeA, nodeB)
             else:
                 set_winner(nodeB, nodeA)
+        else:
+            is_matchup_new = False
         # fetch and return the names of the winner, loser
         if winner['name'] == throwA:
-            return throwA, throwB, False
+            return throwA, throwB, False, is_matchup_new
         elif winner['name'] == throwB:
-            return throwB, throwA, False
+            return throwB, throwA, False, is_matchup_new
         else:
             raise NotImplementedError()  # TODO
-        return 
+
 
     # Get a trueskill rating object for given user (from gamedata)
     def get_user_rating(self, gamedata, user: discord.Member):
