@@ -241,8 +241,8 @@ class RPSWorld(DispatchedBot):
         new_winner_rating, new_loser_rating = trueskill.rate_1vs1(winner_rating, loser_rating, is_tie)
         gamedata.set_user_value(winner.id, 'elo_mu', new_winner_rating.mu)
         gamedata.set_user_value(winner.id, 'elo_sigma', new_winner_rating.sigma)
-        gamedata.set_user_value(loser.id, 'elo_mu', new_winner_rating.mu)
-        gamedata.set_user_value(loser.id, 'elo_sigma', new_winner_rating.sigma)
+        gamedata.set_user_value(loser.id, 'elo_mu', new_loser_rating.mu)
+        gamedata.set_user_value(loser.id, 'elo_sigma', new_loser_rating.sigma)
         return new_winner_rating.mu, new_loser_rating.mu
 
     # With both throws prepared, 
@@ -251,7 +251,7 @@ class RPSWorld(DispatchedBot):
     # 3) Record new throw relationship; record new elo
     async def finish_match(self, gamedata):
         await self.fight_channel.send('Both throws accepted!')
-        await asyncio.sleep(1)
+        await asyncio.sleep(4)
         await self.fight_channel.send(f"{self.fighterA.display_name}'s throw is...")
         await asyncio.sleep(2)
         await self.fight_channel.send(f"**{self.fighterA_response}**!")
@@ -274,9 +274,9 @@ class RPSWorld(DispatchedBot):
         else:
             msg = f'{winner.display_name}!!'
         winner_new_elo, loser_new_elo = await self.calc_elo(gamedata, winner, loser, is_tie)
-        msg += f'\n\n{winner.display_name} new elo: {winner_new_elo}\n{loser.display_name} new elo: {loser_new_elo}'
+        msg += f'\n\n{winner.display_name} new elo: {winner_new_elo}\n{round(loser.display_name, 2)} new elo: {round(loser_new_elo,2)}'
         if is_matchup_new:
-            msg += f'New matchup: {winner_throw} beats {loser_throw}.'
+            msg += f'\nNew matchup: {winner_throw} beats {loser_throw}.'
         await self.fight_channel.send(msg)
         self.state = 'default'
 
