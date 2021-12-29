@@ -176,6 +176,7 @@ class RPSWorld(DispatchedBot):
         if other.id == message.author.id:
             await message.channel.send("Error: You can't challenge yourself.")
             return
+
         # Set fight parameters for this match
         self.fight_channel = message.channel
         self.fighterA = message.author
@@ -268,7 +269,7 @@ class RPSWorld(DispatchedBot):
             msg = 'Its a tie!!'
         else:
             msg = f'{winner.display_name}!!'
-        winner_new_elo, loser_new_elo = await self.calc_elo(winner, loser, is_tie)
+        winner_new_elo, loser_new_elo = await self.calc_elo(gamedata, winner, loser, is_tie)
         msg += f'\n\n{winner.display_name} new elo: {winner_new_elo}\n{loser.display_name} new elo: {loser_new_elo}'
         if is_matchup_new:
             msg += f'New matchup: {winner_throw} beats {loser_throw}.'
