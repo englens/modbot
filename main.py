@@ -6,6 +6,7 @@ from freebie_karma import FreebieKarma
 from rolegiver import RoleGiver
 from manual_mode import ManualMode
 from leaderboard import KarmaLeaderboard
+from rpsgame import RPSWorld
 
 from music_kirbyer import MusicKirbyer
 # ---- Disabled bot imports ----
@@ -56,6 +57,7 @@ if __name__ == "__main__":
     ManualMode(bot)
     KarmaLeaderboard(bot)
     MusicKirbyer(bot)
+    RPSWorld(bot)
     #TTSBot(bot)
     #MCCheck(bot)
     #Dungeon(bot)
