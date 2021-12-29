@@ -207,7 +207,7 @@ class RPSWorld(DispatchedBot):
             is_matchup_new = True
             # not yet defined
             # we need to define one
-            winner = random.choice(nodeA, nodeB)
+            winner = random.choice((nodeA, nodeB))
             if winner is nodeA:
                 set_winner(nodeA, nodeB)
             else:
