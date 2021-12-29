@@ -130,9 +130,9 @@ class RPSWorld(DispatchedBot):
 
             # All checks passed, record throw
             if message.author.id == self.fighterA.id:
-                await self.got_fighterA_throw(throw, game_data)
+                await self.got_fighterA_throw(game_data, throw)
             elif message.author.id == self.fighterB.id:
-                await self.got_fighterB_throw(throw, game_data)
+                await self.got_fighterB_throw(game_data, throw)
             else:
                 # This shouldnt happen
                 await self.fight_channel.send('Error: got throw that improperly passed tasks; aborting')
@@ -220,7 +220,7 @@ class RPSWorld(DispatchedBot):
         return 
 
     # Get a trueskill rating object for given user (from gamedata)
-    def get_user_rating(self, gamedata, user):
+    def get_user_rating(self, gamedata, user: discord.Member):
         elo_mu = gamedata.grab_user_value(user.id, 'elo_mu')
         elo_sigma = gamedata.grab_user_value(user.id, 'elo_sigma')
         if elo_mu is None:
@@ -277,7 +277,7 @@ class RPSWorld(DispatchedBot):
         self.state = 'default'
 
     # Called when fighterA sends a throw during wait_for_throw
-    async def got_fighterA_throw(self, gamedata, throw):
+    async def got_fighterA_throw(self, gamedata, throw: str):
         self.fighterA_response = throw
         await self.fight_channel.send(f"Got {self.fighterA.display_name}'s throw.")
         # If both now ready, start match result printout
@@ -287,8 +287,8 @@ class RPSWorld(DispatchedBot):
             await self.finish_match(gamedata)
 
     # Called when fighterB sends a throw during wait_for_throw
-    async def got_fighterB_throw(self, gamedata, throw):
-        self.fighterA_response = throw
+    async def got_fighterB_throw(self, gamedata, throw: str):
+        self.fighterB_response = throw
         await self.fight_channel.send(f"Got {self.fighterB.display_name}'s throw.")
         # If both now ready, start match result printout
         if self.fighterA_response != None:
