@@ -83,7 +83,7 @@ class RPSWorld(DispatchedBot):
                 # Correct author and in fight channel; proceed
                 if message.content == 'accept':
                     # Fight accepted; cancel timeout task and ask both players for response
-                    self.fighterB_response_task.cancel()   
+                    self.response_timeout_task.cancel()   
                     self.fighterA_response = None
                     self.fighterB_response = None
                     msg = '======== MATCH BEGUN ========\n'
@@ -188,7 +188,7 @@ class RPSWorld(DispatchedBot):
 
         # Create task and set it. This is so we can gracefully cancel the callback if the accept or deny happens
         await message.channel.send(f"{other.display_name}, please respond with 'accept' or 'deny'.")
-        self.fighterB_response_task = asyncio.create_task(self.wait_for_challenge_accept(message))
+        self.response_timeout_task = asyncio.create_task(self.wait_for_challenge_accept(message))
     
     # get the winner from the throw database, or create a new matchup if none exists
     async def calc_winner(self, throwA, throwB):
