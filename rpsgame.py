@@ -281,7 +281,7 @@ class RPSWorld(DispatchedBot):
         msg += f'\n{winner.display_name} new elo: {round(winner_new_elo, 2)}\n{loser.display_name} new elo: {round(loser_new_elo,2)}'
         if is_matchup_new:
             mid = '    ' + str(winner_throw) + ' BEATS ' + str(loser_throw) + '    '
-            top = max((len(mid)-13)/2, 2)*'=' + ' New matchup ' + max((len(mid)-13)/2, 2)*'='
+            top = max(int(len(mid)-13)/2, 2)*'=' + ' New matchup ' + max(int(len(mid)-13)/2, 2)*'='
             bot = len(mid)*'='
             msg += top + '\n' + mid + '\n' + bot
         await self.fight_channel.send(msg)
