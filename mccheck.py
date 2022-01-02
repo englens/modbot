@@ -9,7 +9,7 @@ SERVER_URL_FILE = "../mc_server_ip.txt"
 class MCCheck(DispatchedBot):
 
     def replace_brs(self, txt: str) -> str:
-        return re.sub('<[^<]+?>', '', txt)
+        return re.sub('<[^<]+?>', '\n', txt)
 
     def __init__(self, *args, **kwargs):
         self.help = "!server - check MC server status"
