@@ -178,7 +178,7 @@ class RPSWorld(DispatchedBot):
             return
         if other.id == client.id:
             await message.channel.send("Error: You can't challenge modbot.")
-            return
+            return  # TODO: AI fight system?
         # Set fight parameters for this match
         self.fight_channel = message.channel
         self.fighterA = message.author
