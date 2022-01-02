@@ -7,7 +7,7 @@ from rolegiver import RoleGiver
 from manual_mode import ManualMode
 from leaderboard import KarmaLeaderboard
 from rpsgame import RPSWorld
-
+from mccheck import MCCheck
 from music_kirbyer import MusicKirbyer
 # ---- Disabled bot imports ----
 #from dungeon import Dungeon
@@ -59,7 +59,7 @@ if __name__ == "__main__":
     MusicKirbyer(bot)
     RPSWorld(bot)
     #TTSBot(bot)
-    #MCCheck(bot)
+    MCCheck(bot)
     #Dungeon(bot)
     # ----------------------
     client.run(get_key(KEY_PATH))
