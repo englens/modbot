@@ -185,6 +185,7 @@ class DispatchedBot:
         bot.register_event_handler('on_reaction_remove', self.on_reaction_remove)
         bot.register_event_handler('on_raw_reaction_add', self.on_raw_reaction_add)
         bot.register_event_handler('on_raw_reaction_remove', self.on_raw_reaction_remove)
+        print('Registered DispatchedBot:', type(self).__name__)
         self.bot = bot
 
     async def get_help_string(self) -> str:
