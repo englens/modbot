@@ -29,5 +29,5 @@ class MCCheck(DispatchedBot):
 
     def read_server_file(self):
         with open(SERVER_URL_FILE) as f:
-            return str(f.read()) # idk if str is needed but dont feel like testing
+            return str(f.read()).rstrip() # idk if str is needed but dont feel like testing
 
