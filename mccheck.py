@@ -19,6 +19,7 @@ class MCCheck(DispatchedBot):
     async def on_message(self, client, game_data, message):
         if message.content == '!server':
             try:
+                print('calling to server:', self.server_url)
                 r = requests.get(self.server_url)
                 response_text = self.replace_brs(r.text)
                 await message.channel.send('```'+response_text+'```')
