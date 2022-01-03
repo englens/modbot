@@ -9,7 +9,7 @@ from py2neo import RelationshipMatcher, NodeMatcher
 
 from mod import DispatchedBot
 ### Setup graph enviroment stuff
-uri = "neo4j+s://c73aae9b.databases.neo4j.io"
+uri = "bolt://localhost:7687"
 
 passwordfile = '../rps_password.txt'
 with open(passwordfile) as f:
