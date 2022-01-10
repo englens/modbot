@@ -14,9 +14,9 @@ class KarmaLeaderboard(DispatchedBot):
     # reacts with upvote and downvote if in meme channel (defined with global)
     async def on_message(self, client, game_data, message):
         if message.content.startswith('!leaderboard'):
-            pass
+            await self.leaderboard(client, game_data, message)
         if message.content.startswith('!loserboard'):
-            pass
+            await self.loserboard(client, game_data, message)
 
     async def loserboard(self, client, game_data, message):
         members = []
