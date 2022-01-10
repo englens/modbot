@@ -34,14 +34,14 @@ class KarmaLeaderboard(DispatchedBot):
                 nam = user.nick
             user_scores.append((nam, game_data.grab_user_value(user.id, 'karma')))
         
-        user_scores = reversed(sorted(user_scores, key=lambda x: -x[1]))
-
+        user_scores = list(reversed(sorted(user_scores, key=lambda x: -x[1])))
+        # Grab bottom 5, and rereverse so highest at top
+        user_scores = list(reversed(user_scores[:5]))
         msg = '```----------Karma Loserboard----------\n'
         lines = []
         for i in range(5):
-            x = i+5
             try:
-                lines.append(f'{i+1}) {deEmojify(user_scores[x][0])}')
+                lines.append(f'{-(i+1)}) {deEmojify(user_scores[i][0])}')
             except IndexError:
                 print(f"Less than 5 users. Stopping at {i}")
                 if i == 0:
