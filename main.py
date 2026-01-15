@@ -6,6 +6,7 @@ from freebie_karma import FreebieKarma
 from rolegiver import RoleGiver
 from manual_mode import ManualMode
 from leaderboard import KarmaLeaderboard
+from double_letter_downvoter import DoubleLetterDownvoter
 #from rpsgame import RPSWorld
 #from mccheck import MCCheck
 from music_kirbyer import MusicKirbyer
@@ -57,6 +58,7 @@ if __name__ == "__main__":
     ManualMode(bot)
     KarmaLeaderboard(bot)
     MusicKirbyer(bot)
+    DoubleLetterDownvoter(bot)
     #RPSWorld(bot)
     #TTSBot(bot)
     #MCCheck(bot)
